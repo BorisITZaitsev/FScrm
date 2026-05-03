@@ -1,0 +1,150 @@
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Общий вид администратора | Fit Service CRM";
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Разделы администратора</p>
+        <h1>Общий вид</h1>
+    </div>
+    <div class="quick-stats">
+        <div><strong>@Model.UsersTotal</strong><span>пользователей</span></div>
+        <div><strong>@Model.EmployeesTotal</strong><span>сотрудников</span></div>
+        <div><strong>@Model.CustomersTotal</strong><span>клиентов</span></div>
+        <div><strong>@Model.OrdersTotal</strong><span>заказ-нарядов</span></div>
+    </div>
+</section>
+
+<section class="overview-grid">
+    <article class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Пользователи</h2>
+                <span>Учетные записи и роли</span>
+            </div>
+            <div class="actions-row">
+                <a class="button button-small" asp-action="Users" asp-route-create="true">Создать</a>
+                <a class="button button-small" asp-action="Users">Смотреть всё</a>
+            </div>
+        </div>
+        <div class="stack-list">
+            @foreach (var user in Model.Users)
+            {
+                <article class="list-row">
+                    <div>
+                        <strong>@user.Login</strong>
+                        <span>@user.Role.Label() · @(user.Employee?.FullName ?? user.Customer?.Name ?? "связь не задана")</span>
+                    </div>
+                    <a class="icon-button" title="Изменить пользователя" asp-action="Users" asp-route-id="@user.Id" asp-route-edit="true">&#9881;</a>
+                </article>
+            }
+        </div>
+    </article>
+
+    <article class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Сотрудники</h2>
+                <span>Штат сервиса</span>
+            </div>
+            <div class="actions-row">
+                <a class="button button-small" asp-action="Employees" asp-route-create="true">Создать</a>
+                <a class="button button-small" asp-action="Employees">Смотреть всё</a>
+            </div>
+        </div>
+        <div class="stack-list">
+            @foreach (var employee in Model.Employees)
+            {
+                <article class="list-row">
+                    <div>
+                        <strong>@employee.FullName</strong>
+                        <span>@employee.Position · @employee.Phone</span>
+                    </div>
+                    <a class="icon-button" title="Изменить сотрудника" asp-action="Employees" asp-route-id="@employee.Id" asp-route-edit="true">&#9881;</a>
+                </article>
+            }
+        </div>
+    </article>
+
+    <article class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Услуги</h2>
+                <span>Каталог работ СТО</span>
+            </div>
+            <div class="actions-row">
+                <a class="button button-small" asp-action="Services" asp-route-create="true">Создать</a>
+                <a class="button button-small" asp-action="Services">Смотреть всё</a>
+            </div>
+        </div>
+        <div class="stack-list">
+            @foreach (var service in Model.Services)
+            {
+                <article class="list-row">
+                    <div>
+                        <strong>@service.Name</strong>
+                        <span>@service.Category · @service.Type · @service.Price.Money()</span>
+                    </div>
+                    <a class="icon-button" title="Изменить услугу" asp-action="Services" asp-route-id="@service.Id" asp-route-edit="true">&#9881;</a>
+                </article>
+            }
+        </div>
+    </article>
+
+    <article class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Клиенты</h2>
+                <span>Физлица и организации</span>
+            </div>
+            <div class="actions-row">
+                <a class="button button-small" asp-action="Customers" asp-route-create="true">Создать</a>
+                <a class="button button-small" asp-action="Customers">Смотреть всё</a>
+            </div>
+        </div>
+        <div class="stack-list">
+            @foreach (var customer in Model.Customers)
+            {
+                <article class="list-row">
+                    <div>
+                        <strong>@customer.Name</strong>
+                        <span>@customer.Type.Label() · @customer.Vehicles.Count ТС · @customer.Phone</span>
+                    </div>
+                    <a class="icon-button" title="Изменить клиента" asp-action="Customers" asp-route-id="@customer.Id" asp-route-edit="true">&#9881;</a>
+                </article>
+            }
+        </div>
+    </article>
+
+    <article class="panel span-2">
+        <div class="panel-title">
+            <div>
+                <h2>Заказ-наряды</h2>
+                <span>Последние работы сервиса</span>
+            </div>
+            <div class="actions-row">
+                <a class="button button-small" asp-action="Orders" asp-route-create="true">Создать</a>
+                <a class="button button-small" asp-action="Orders">Смотреть всё</a>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead><tr><th>Заказ</th><th>Клиент</th><th>ТС</th><th>Услуги</th><th>Статус</th><th></th></tr></thead>
+                <tbody>
+                @foreach (var order in Model.Orders)
+                {
+                    <tr>
+                        <td>#@order.Id<br /><span>@order.PlannedStartAt.ToString("dd.MM.yyyy HH:mm")</span></td>
+                        <td>@order.Customer?.Name</td>
+                        <td>@order.Vehicle?.PlateNumber<br /><span>@order.Vehicle?.Make @order.Vehicle?.Model</span></td>
+                        <td>@string.Join(", ", order.OrderServices.Select(item => item.ServiceItem?.Name))</td>
+                        <td><span class="@order.Status.BadgeClass()">@order.Status.Label()</span></td>
+                        <td><a class="icon-button" title="Изменить заказ-наряд" asp-action="Orders" asp-route-id="@order.Id" asp-route-edit="true">&#9881;</a></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>

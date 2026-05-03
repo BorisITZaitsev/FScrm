@@ -1,0 +1,44 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Вход | Fit Service CRM";
+}
+
+<section class="login-shell">
+    <div class="login-panel">
+        <div class="login-title">
+            <span class="brand-mark large">FS</span>
+            <div>
+                <h1>Fit Service CRM</h1>
+                <p>Вход в рабочий контур станции технического обслуживания</p>
+            </div>
+        </div>
+
+        <form asp-controller="Auth" asp-action="Login" method="post" class="form-grid single">
+            @Html.AntiForgeryToken()
+            <input asp-for="ReturnUrl" type="hidden" />
+            @if (!string.IsNullOrWhiteSpace(Model.Error))
+            {
+                <div class="validation">@Model.Error</div>
+            }
+            <label>
+                <span>Логин</span>
+                <input asp-for="Login" autocomplete="username" />
+            </label>
+            <label>
+                <span>Пароль</span>
+                <input asp-for="Password" type="password" autocomplete="current-password" />
+            </label>
+            <button class="button button-primary" type="submit">Войти</button>
+        </form>
+    </div>
+
+    <div class="demo-panel">
+        <h2>Демо-пользователи</h2>
+        <dl class="credential-list">
+            <div><dt>Администратор</dt><dd><code>admin</code> / <code>Admin2026!</code></dd></div>
+            <div><dt>Мастер-приемщик</dt><dd><code>master</code> / <code>Master2026!</code></dd></div>
+            <div><dt>Руководитель сервиса</dt><dd><code>manager</code> / <code>Manager2026!</code></dd></div>
+            <div><dt>Клиент сервиса</dt><dd><code>client</code> / <code>Client2026!</code></dd></div>
+        </dl>
+    </div>
+</section>

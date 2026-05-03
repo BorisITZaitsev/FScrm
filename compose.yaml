@@ -1,0 +1,7 @@
+﻿services:
+  fitservicecrm:
+    image: fitservicecrm
+    build:
+      context: .
+      dockerfile: FitServiceCRM/Dockerfile
+

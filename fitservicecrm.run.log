@@ -1,0 +1,1858 @@
+Используются параметры запуска из .\FitServiceCRM\Properties\launchSettings.json...
+Сборка…
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (8ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*) FROM "sqlite_master" WHERE "type" = 'table' AND "rootpage" IS NOT NULL;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT EXISTS (
+          SELECT 1
+          FROM "Users" AS "u")
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5253
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: C:\Users\borya\Programming\Codex projects\2026_Дипломная работа_БараникасМИ\FitServiceCRM\FitServiceCRM
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@model_Login='?' (Size = 5)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      WHERE "u"."Login" = @model_Login
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Users" AS "u"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Employees" AS "e"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Customers" AS "c"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Services" AS "s"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "WorkOrders" AS "w"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u0"."Id", "u0"."CustomerId", "u0"."EmployeeId", "u0"."IsActive", "u0"."Login", "u0"."PasswordHash", "u0"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM (
+          SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role"
+          FROM "Users" AS "u"
+          ORDER BY "u"."Login"
+          LIMIT @p
+      ) AS "u0"
+      LEFT JOIN "Employees" AS "e" ON "u0"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u0"."CustomerId" = "c"."Id"
+      ORDER BY "u0"."Login"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          ORDER BY "c"."Name"
+          LIMIT @p
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Name", "c0"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Name"
+      LIMIT @p
+warn: Microsoft.EntityFrameworkCore.Query[20504]
+      Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s3"."Email", "s3"."FullName", "s3"."Phone", "s3"."Position", "s4"."Id", "s4"."Description", "s4"."Price", "s4"."ServiceItemId", "s4"."VehicleId", "s4"."WorkOrderId", "s4"."Id0", "s4"."ApproximatePurchaseIntervalDays", "s4"."Category", "s4"."EstimatedDurationMinutes", "s4"."Name", "s4"."Price0", "s4"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w0"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w1"."WorkOrderId", "w1"."EmployeeId", "e0"."Id", "e0"."Email", "e0"."FullName", "e0"."Phone", "e0"."Position"
+          FROM "WorkOrderEmployees" AS "w1"
+          INNER JOIN "Employees" AS "e0" ON "w1"."EmployeeId" = "e0"."Id"
+      ) AS "s3" ON "w0"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w2"."Id", "w2"."Description", "w2"."Price", "w2"."ServiceItemId", "w2"."VehicleId", "w2"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w2"
+          INNER JOIN "Services" AS "s0" ON "w2"."ServiceItemId" = "s0"."Id"
+      ) AS "s4" ON "w0"."Id" = "s4"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w0"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w0"."Id" = "s1"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s4"."Id", "s4"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@vehicleId='?' (DbType = Int32), @selectedCustomer_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Vehicles" AS "v"
+      WHERE "v"."Id" = @vehicleId AND "v"."CustomerId" = @selectedCustomer_Id
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@vehicleId='?' (DbType = Int32), @selectedCustomer_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Vehicles" AS "v"
+      WHERE "v"."Id" = @vehicleId AND "v"."CustomerId" = @selectedCustomer_Id
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@model_Login='?' (Size = 5)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      WHERE "u"."Login" = @model_Login
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Users" AS "u"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Employees" AS "e"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Customers" AS "c"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Services" AS "s"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "WorkOrders" AS "w"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u0"."Id", "u0"."CustomerId", "u0"."EmployeeId", "u0"."IsActive", "u0"."Login", "u0"."PasswordHash", "u0"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM (
+          SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role"
+          FROM "Users" AS "u"
+          ORDER BY "u"."Login"
+          LIMIT @p
+      ) AS "u0"
+      LEFT JOIN "Employees" AS "e" ON "u0"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u0"."CustomerId" = "c"."Id"
+      ORDER BY "u0"."Login"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          ORDER BY "c"."Name"
+          LIMIT @p
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Name", "c0"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Name"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s3"."Email", "s3"."FullName", "s3"."Phone", "s3"."Position", "s4"."Id", "s4"."Description", "s4"."Price", "s4"."ServiceItemId", "s4"."VehicleId", "s4"."WorkOrderId", "s4"."Id0", "s4"."ApproximatePurchaseIntervalDays", "s4"."Category", "s4"."EstimatedDurationMinutes", "s4"."Name", "s4"."Price0", "s4"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w0"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w1"."WorkOrderId", "w1"."EmployeeId", "e0"."Id", "e0"."Email", "e0"."FullName", "e0"."Phone", "e0"."Position"
+          FROM "WorkOrderEmployees" AS "w1"
+          INNER JOIN "Employees" AS "e0" ON "w1"."EmployeeId" = "e0"."Id"
+      ) AS "s3" ON "w0"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w2"."Id", "w2"."Description", "w2"."Price", "w2"."ServiceItemId", "w2"."VehicleId", "w2"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w2"
+          INNER JOIN "Services" AS "s0" ON "w2"."ServiceItemId" = "s0"."Id"
+      ) AS "s4" ON "w0"."Id" = "s4"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w0"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w0"."Id" = "s1"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s4"."Id", "s4"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@model_Login='?' (Size = 5)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      WHERE "u"."Login" = @model_Login
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Users" AS "u"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Employees" AS "e"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Customers" AS "c"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Services" AS "s"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "WorkOrders" AS "w"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u0"."Id", "u0"."CustomerId", "u0"."EmployeeId", "u0"."IsActive", "u0"."Login", "u0"."PasswordHash", "u0"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM (
+          SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role"
+          FROM "Users" AS "u"
+          ORDER BY "u"."Login"
+          LIMIT @p
+      ) AS "u0"
+      LEFT JOIN "Employees" AS "e" ON "u0"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u0"."CustomerId" = "c"."Id"
+      ORDER BY "u0"."Login"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          ORDER BY "c"."Name"
+          LIMIT @p
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Name", "c0"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Name"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s3"."Email", "s3"."FullName", "s3"."Phone", "s3"."Position", "s4"."Id", "s4"."Description", "s4"."Price", "s4"."ServiceItemId", "s4"."VehicleId", "s4"."WorkOrderId", "s4"."Id0", "s4"."ApproximatePurchaseIntervalDays", "s4"."Category", "s4"."EstimatedDurationMinutes", "s4"."Name", "s4"."Price0", "s4"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w0"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w1"."WorkOrderId", "w1"."EmployeeId", "e0"."Id", "e0"."Email", "e0"."FullName", "e0"."Phone", "e0"."Position"
+          FROM "WorkOrderEmployees" AS "w1"
+          INNER JOIN "Employees" AS "e0" ON "w1"."EmployeeId" = "e0"."Id"
+      ) AS "s3" ON "w0"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w2"."Id", "w2"."Description", "w2"."Price", "w2"."ServiceItemId", "w2"."VehicleId", "w2"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w2"
+          INNER JOIN "Services" AS "s0" ON "w2"."ServiceItemId" = "s0"."Id"
+      ) AS "s4" ON "w0"."Id" = "s4"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w0"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w0"."Id" = "s1"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s4"."Id", "s4"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (7ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Users" AS "u"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Employees" AS "e"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Customers" AS "c"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Services" AS "s"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "WorkOrders" AS "w"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u0"."Id", "u0"."CustomerId", "u0"."EmployeeId", "u0"."IsActive", "u0"."Login", "u0"."PasswordHash", "u0"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM (
+          SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role"
+          FROM "Users" AS "u"
+          ORDER BY "u"."Login"
+          LIMIT @p
+      ) AS "u0"
+      LEFT JOIN "Employees" AS "e" ON "u0"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u0"."CustomerId" = "c"."Id"
+      ORDER BY "u0"."Login"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          ORDER BY "c"."Name"
+          LIMIT @p
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Name", "c0"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Name"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s3"."Email", "s3"."FullName", "s3"."Phone", "s3"."Position", "s4"."Id", "s4"."Description", "s4"."Price", "s4"."ServiceItemId", "s4"."VehicleId", "s4"."WorkOrderId", "s4"."Id0", "s4"."ApproximatePurchaseIntervalDays", "s4"."Category", "s4"."EstimatedDurationMinutes", "s4"."Name", "s4"."Price0", "s4"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w0"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w1"."WorkOrderId", "w1"."EmployeeId", "e0"."Id", "e0"."Email", "e0"."FullName", "e0"."Phone", "e0"."Position"
+          FROM "WorkOrderEmployees" AS "w1"
+          INNER JOIN "Employees" AS "e0" ON "w1"."EmployeeId" = "e0"."Id"
+      ) AS "s3" ON "w0"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w2"."Id", "w2"."Description", "w2"."Price", "w2"."ServiceItemId", "w2"."VehicleId", "w2"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w2"
+          INNER JOIN "Services" AS "s0" ON "w2"."ServiceItemId" = "s0"."Id"
+      ) AS "s4" ON "w0"."Id" = "s4"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w0"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w0"."Id" = "s1"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s4"."Id", "s4"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Users" AS "u"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Employees" AS "e"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Customers" AS "c"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Services" AS "s"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "WorkOrders" AS "w"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u0"."Id", "u0"."CustomerId", "u0"."EmployeeId", "u0"."IsActive", "u0"."Login", "u0"."PasswordHash", "u0"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM (
+          SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role"
+          FROM "Users" AS "u"
+          ORDER BY "u"."Login"
+          LIMIT @p
+      ) AS "u0"
+      LEFT JOIN "Employees" AS "e" ON "u0"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u0"."CustomerId" = "c"."Id"
+      ORDER BY "u0"."Login"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          ORDER BY "c"."Name"
+          LIMIT @p
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Name", "c0"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Name"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s3"."Email", "s3"."FullName", "s3"."Phone", "s3"."Position", "s4"."Id", "s4"."Description", "s4"."Price", "s4"."ServiceItemId", "s4"."VehicleId", "s4"."WorkOrderId", "s4"."Id0", "s4"."ApproximatePurchaseIntervalDays", "s4"."Category", "s4"."EstimatedDurationMinutes", "s4"."Name", "s4"."Price0", "s4"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w0"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w1"."WorkOrderId", "w1"."EmployeeId", "e0"."Id", "e0"."Email", "e0"."FullName", "e0"."Phone", "e0"."Position"
+          FROM "WorkOrderEmployees" AS "w1"
+          INNER JOIN "Employees" AS "e0" ON "w1"."EmployeeId" = "e0"."Id"
+      ) AS "s3" ON "w0"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w2"."Id", "w2"."Description", "w2"."Price", "w2"."ServiceItemId", "w2"."VehicleId", "w2"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w2"
+          INNER JOIN "Services" AS "s0" ON "w2"."ServiceItemId" = "s0"."Id"
+      ) AS "s4" ON "w0"."Id" = "s4"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w0"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w0"."Id" = "s1"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s4"."Id", "s4"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@vehicleId='?' (DbType = Int32), @selectedCustomer_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Vehicles" AS "v"
+      WHERE "v"."Id" = @vehicleId AND "v"."CustomerId" = @selectedCustomer_Id
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+warn: Microsoft.EntityFrameworkCore.Query[20504]
+      Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@id='?' (DbType = Int32), @customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "v0"."Id", "v0"."CustomerId", "v0"."Make", "v0"."Mileage", "v0"."Model", "v0"."PlateNumber", "v0"."Year", "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId", "w0"."Id", "w0"."Description", "w0"."Price", "w0"."ServiceItemId", "w0"."VehicleId", "w0"."WorkOrderId"
+      FROM (
+          SELECT "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+          FROM "Vehicles" AS "v"
+          WHERE "v"."Id" = @id AND "v"."CustomerId" = @customerId
+          LIMIT 1
+      ) AS "v0"
+      LEFT JOIN "WorkOrders" AS "w" ON "v0"."Id" = "w"."VehicleId"
+      LEFT JOIN "WorkItems" AS "w0" ON "v0"."Id" = "w0"."VehicleId"
+      ORDER BY "v0"."Id", "w"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@vehicleId='?' (DbType = Int32), @selectedCustomer_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Vehicles" AS "v"
+      WHERE "v"."Id" = @vehicleId AND "v"."CustomerId" = @selectedCustomer_Id
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@model_Login='?' (Size = 6)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      WHERE "u"."Login" = @model_Login
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role"
+      FROM "Users" AS "u"
+      WHERE "u"."Id" = @userId
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s3"."Email", "s3"."FullName", "s3"."Phone", "s3"."Position", "s4"."Id", "s4"."Description", "s4"."Price", "s4"."ServiceItemId", "s4"."VehicleId", "s4"."WorkOrderId", "s4"."Id0", "s4"."ApproximatePurchaseIntervalDays", "s4"."Category", "s4"."EstimatedDurationMinutes", "s4"."Name", "s4"."Price0", "s4"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w0"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w1"."WorkOrderId", "w1"."EmployeeId", "e0"."Id", "e0"."Email", "e0"."FullName", "e0"."Phone", "e0"."Position"
+          FROM "WorkOrderEmployees" AS "w1"
+          INNER JOIN "Employees" AS "e0" ON "w1"."EmployeeId" = "e0"."Id"
+      ) AS "s3" ON "w0"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w2"."Id", "w2"."Description", "w2"."Price", "w2"."ServiceItemId", "w2"."VehicleId", "w2"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w2"
+          INNER JOIN "Services" AS "s0" ON "w2"."ServiceItemId" = "s0"."Id"
+      ) AS "s4" ON "w0"."Id" = "s4"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w0"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w0"."Id" = "s1"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s4"."Id", "s4"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Vehicles" AS "v"
+      INNER JOIN "Customers" AS "c" ON "v"."CustomerId" = "c"."Id"
+      ORDER BY "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Category", "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@model_Login='?' (Size = 5)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      WHERE "u"."Login" = @model_Login
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Users" AS "u"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Employees" AS "e"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Customers" AS "c"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Services" AS "s"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "WorkOrders" AS "w"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u0"."Id", "u0"."CustomerId", "u0"."EmployeeId", "u0"."IsActive", "u0"."Login", "u0"."PasswordHash", "u0"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM (
+          SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role"
+          FROM "Users" AS "u"
+          ORDER BY "u"."Login"
+          LIMIT @p
+      ) AS "u0"
+      LEFT JOIN "Employees" AS "e" ON "u0"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u0"."CustomerId" = "c"."Id"
+      ORDER BY "u0"."Login"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          ORDER BY "c"."Name"
+          LIMIT @p
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Name", "c0"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Name"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s3"."Email", "s3"."FullName", "s3"."Phone", "s3"."Position", "s4"."Id", "s4"."Description", "s4"."Price", "s4"."ServiceItemId", "s4"."VehicleId", "s4"."WorkOrderId", "s4"."Id0", "s4"."ApproximatePurchaseIntervalDays", "s4"."Category", "s4"."EstimatedDurationMinutes", "s4"."Name", "s4"."Price0", "s4"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w0"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w1"."WorkOrderId", "w1"."EmployeeId", "e0"."Id", "e0"."Email", "e0"."FullName", "e0"."Phone", "e0"."Position"
+          FROM "WorkOrderEmployees" AS "w1"
+          INNER JOIN "Employees" AS "e0" ON "w1"."EmployeeId" = "e0"."Id"
+      ) AS "s3" ON "w0"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w2"."Id", "w2"."Description", "w2"."Price", "w2"."ServiceItemId", "w2"."VehicleId", "w2"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w2"
+          INNER JOIN "Services" AS "s0" ON "w2"."ServiceItemId" = "s0"."Id"
+      ) AS "s4" ON "w0"."Id" = "s4"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w0"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w0"."Id" = "s1"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s4"."Id", "s4"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s0"."Category"
+      FROM (
+          SELECT DISTINCT "s"."Category"
+          FROM "Services" AS "s"
+      ) AS "s0"
+      ORDER BY "s0"."Category"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s0"."Type"
+      FROM (
+          SELECT DISTINCT "s"."Type"
+          FROM "Services" AS "s"
+      ) AS "s0"
+      ORDER BY "s0"."Type"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s0"."Category"
+      FROM (
+          SELECT DISTINCT "s"."Category"
+          FROM "Services" AS "s"
+      ) AS "s0"
+      ORDER BY "s0"."Category"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s0"."Type"
+      FROM (
+          SELECT DISTINCT "s"."Type"
+          FROM "Services" AS "s"
+      ) AS "s0"
+      ORDER BY "s0"."Type"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@model_Login='?' (Size = 6)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      WHERE "u"."Login" = @model_Login
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role"
+      FROM "Users" AS "u"
+      WHERE "u"."Id" = @userId
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s3"."Email", "s3"."FullName", "s3"."Phone", "s3"."Position", "s4"."Id", "s4"."Description", "s4"."Price", "s4"."ServiceItemId", "s4"."VehicleId", "s4"."WorkOrderId", "s4"."Id0", "s4"."ApproximatePurchaseIntervalDays", "s4"."Category", "s4"."EstimatedDurationMinutes", "s4"."Name", "s4"."Price0", "s4"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w0"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w1"."WorkOrderId", "w1"."EmployeeId", "e0"."Id", "e0"."Email", "e0"."FullName", "e0"."Phone", "e0"."Position"
+          FROM "WorkOrderEmployees" AS "w1"
+          INNER JOIN "Employees" AS "e0" ON "w1"."EmployeeId" = "e0"."Id"
+      ) AS "s3" ON "w0"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w2"."Id", "w2"."Description", "w2"."Price", "w2"."ServiceItemId", "w2"."VehicleId", "w2"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w2"
+          INNER JOIN "Services" AS "s0" ON "w2"."ServiceItemId" = "s0"."Id"
+      ) AS "s4" ON "w0"."Id" = "s4"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w0"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w0"."Id" = "s1"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s4"."Id", "s4"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Vehicles" AS "v"
+      INNER JOIN "Customers" AS "c" ON "v"."CustomerId" = "c"."Id"
+      ORDER BY "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Category", "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@model_Login='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      WHERE "u"."Login" = @model_Login
+      LIMIT 2
+warn: Microsoft.EntityFrameworkCore.Query[20504]
+      Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@from_Value='?' (DbType = DateTime), @to_Value='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price", "s0"."Type", "s1"."WorkOrderId", "s1"."EmployeeId", "s1"."Id", "s1"."Email", "s1"."FullName", "s1"."Phone", "s1"."Position"
+      FROM "WorkOrders" AS "w"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s0" ON "w"."Id" = "s0"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w0"."WorkOrderId", "w0"."EmployeeId", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+          FROM "WorkOrderEmployees" AS "w0"
+          INNER JOIN "Employees" AS "e" ON "w0"."EmployeeId" = "e"."Id"
+      ) AS "s1" ON "w"."Id" = "s1"."WorkOrderId"
+      WHERE "w"."Status" = 6 AND "w"."PlannedStartAt" >= @from_Value AND "w"."PlannedStartAt" <= @to_Value
+      ORDER BY "w"."PlannedStartAt", "w"."Id", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s1"."WorkOrderId", "s1"."EmployeeId"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Category", "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      ORDER BY "c"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price", "s0"."Type"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s0" ON "w0"."Id" = "s0"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s0"."WorkOrderId", "s0"."ServiceItemId"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@from_Value='?' (DbType = DateTime), @to_Value='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price", "s0"."Type", "s1"."WorkOrderId", "s1"."EmployeeId", "s1"."Id", "s1"."Email", "s1"."FullName", "s1"."Phone", "s1"."Position"
+      FROM "WorkOrders" AS "w"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s0" ON "w"."Id" = "s0"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w0"."WorkOrderId", "w0"."EmployeeId", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+          FROM "WorkOrderEmployees" AS "w0"
+          INNER JOIN "Employees" AS "e" ON "w0"."EmployeeId" = "e"."Id"
+      ) AS "s1" ON "w"."Id" = "s1"."WorkOrderId"
+      WHERE "w"."Status" = 6 AND "w"."PlannedStartAt" >= @from_Value AND "w"."PlannedStartAt" <= @to_Value
+      ORDER BY "w"."PlannedStartAt", "w"."Id", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s1"."WorkOrderId", "s1"."EmployeeId"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Category", "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      ORDER BY "c"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price", "s0"."Type"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s0" ON "w0"."Id" = "s0"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s0"."WorkOrderId", "s0"."ServiceItemId"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@from_Value='?' (DbType = DateTime), @to_Value='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price", "s0"."Type", "s1"."WorkOrderId", "s1"."EmployeeId", "s1"."Id", "s1"."Email", "s1"."FullName", "s1"."Phone", "s1"."Position"
+      FROM "WorkOrders" AS "w"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s0" ON "w"."Id" = "s0"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w0"."WorkOrderId", "w0"."EmployeeId", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+          FROM "WorkOrderEmployees" AS "w0"
+          INNER JOIN "Employees" AS "e" ON "w0"."EmployeeId" = "e"."Id"
+      ) AS "s1" ON "w"."Id" = "s1"."WorkOrderId"
+      WHERE "w"."Status" = 6 AND "w"."PlannedStartAt" >= @from_Value AND "w"."PlannedStartAt" <= @to_Value
+      ORDER BY "w"."PlannedStartAt", "w"."Id", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s1"."WorkOrderId", "s1"."EmployeeId"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Category", "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      ORDER BY "c"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price", "s0"."Type"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s0" ON "w0"."Id" = "s0"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s0"."WorkOrderId", "s0"."ServiceItemId"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@from_Value='?' (DbType = DateTime), @to_Value='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price", "s0"."Type", "s1"."WorkOrderId", "s1"."EmployeeId", "s1"."Id", "s1"."Email", "s1"."FullName", "s1"."Phone", "s1"."Position"
+      FROM "WorkOrders" AS "w"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s0" ON "w"."Id" = "s0"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w0"."WorkOrderId", "w0"."EmployeeId", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+          FROM "WorkOrderEmployees" AS "w0"
+          INNER JOIN "Employees" AS "e" ON "w0"."EmployeeId" = "e"."Id"
+      ) AS "s1" ON "w"."Id" = "s1"."WorkOrderId"
+      WHERE "w"."Status" = 6 AND "w"."PlannedStartAt" >= @from_Value AND "w"."PlannedStartAt" <= @to_Value
+      ORDER BY "w"."PlannedStartAt", "w"."Id", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s1"."WorkOrderId", "s1"."EmployeeId"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Category", "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      ORDER BY "c"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price", "s0"."Type"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s0" ON "w0"."Id" = "s0"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s0"."WorkOrderId", "s0"."ServiceItemId"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@model_Login='?' (Size = 6)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      WHERE "u"."Login" = @model_Login
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."CustomerId"
+      FROM "Users" AS "u"
+      WHERE "u"."Id" = @userId
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      WHERE "c"."Id" = @customerId
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Vehicles" AS "v"
+      WHERE "v"."CustomerId" = @customerId
+      ORDER BY "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Category", "s"."Name"
+warn: Microsoft.EntityFrameworkCore.Query[20504]
+      Compiling a query which loads related collections for more than one collection navigation, either via 'Include' or through projection, but no 'QuerySplittingBehavior' has been configured. By default, Entity Framework will use 'QuerySplittingBehavior.SingleQuery', which can potentially result in slow query performance. See https://go.microsoft.com/fwlink/?linkid=2134277 for more information. To identify the query that's triggering this warning call 'ConfigureWarnings(w => w.Throw(RelationalEventId.MultipleCollectionIncludeWarning))'.
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."Id", "s3"."Description", "s3"."Price", "s3"."ServiceItemId", "s3"."VehicleId", "s3"."WorkOrderId", "s3"."Id0", "s3"."ApproximatePurchaseIntervalDays", "s3"."Category", "s3"."EstimatedDurationMinutes", "s3"."Name", "s3"."Price0", "s3"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM "WorkOrders" AS "w"
+      INNER JOIN "Vehicles" AS "v" ON "w"."VehicleId" = "v"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w0"."Id", "w0"."Description", "w0"."Price", "w0"."ServiceItemId", "w0"."VehicleId", "w0"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w0"
+          INNER JOIN "Services" AS "s0" ON "w0"."ServiceItemId" = "s0"."Id"
+      ) AS "s3" ON "w"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w"."Id" = "s1"."WorkOrderId"
+      WHERE "w"."CustomerId" = @customerId
+      ORDER BY "w"."PlannedStartAt" DESC, "w"."Id", "v"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."Id", "s3"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@customerId='?' (DbType = Int32), @p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "n"."Id", "n"."CreatedAt", "n"."CustomerId", "n"."IsRead", "n"."Message", "n"."Title", "n"."WorkOrderId"
+      FROM "Notifications" AS "n"
+      WHERE "n"."CustomerId" = @customerId
+      ORDER BY "n"."CreatedAt" DESC
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@model_Login='?' (Size = 7)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      WHERE "u"."Login" = @model_Login
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@from_Value='?' (DbType = DateTime), @to_Value='?' (DbType = DateTime)], CommandType='Text', CommandTimeout='30']
+      SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price", "s0"."Type", "s1"."WorkOrderId", "s1"."EmployeeId", "s1"."Id", "s1"."Email", "s1"."FullName", "s1"."Phone", "s1"."Position"
+      FROM "WorkOrders" AS "w"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s0" ON "w"."Id" = "s0"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w0"."WorkOrderId", "w0"."EmployeeId", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+          FROM "WorkOrderEmployees" AS "w0"
+          INNER JOIN "Employees" AS "e" ON "w0"."EmployeeId" = "e"."Id"
+      ) AS "s1" ON "w"."Id" = "s1"."WorkOrderId"
+      WHERE "w"."Status" = 6 AND "w"."PlannedStartAt" >= @from_Value AND "w"."PlannedStartAt" <= @to_Value
+      ORDER BY "w"."PlannedStartAt", "w"."Id", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s1"."WorkOrderId", "s1"."EmployeeId"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Category", "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      ORDER BY "c"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s0"."WorkOrderId", "s0"."ServiceItemId", "s0"."Id", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price", "s0"."Type"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s0" ON "w0"."Id" = "s0"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s0"."WorkOrderId", "s0"."ServiceItemId"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@model_Login='?' (Size = 6)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      WHERE "u"."Login" = @model_Login
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."CustomerId"
+      FROM "Users" AS "u"
+      WHERE "u"."Id" = @userId
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      WHERE "c"."Id" = @customerId
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Vehicles" AS "v"
+      WHERE "v"."CustomerId" = @customerId
+      ORDER BY "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Category", "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."Id", "s3"."Description", "s3"."Price", "s3"."ServiceItemId", "s3"."VehicleId", "s3"."WorkOrderId", "s3"."Id0", "s3"."ApproximatePurchaseIntervalDays", "s3"."Category", "s3"."EstimatedDurationMinutes", "s3"."Name", "s3"."Price0", "s3"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM "WorkOrders" AS "w"
+      INNER JOIN "Vehicles" AS "v" ON "w"."VehicleId" = "v"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w0"."Id", "w0"."Description", "w0"."Price", "w0"."ServiceItemId", "w0"."VehicleId", "w0"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w0"
+          INNER JOIN "Services" AS "s0" ON "w0"."ServiceItemId" = "s0"."Id"
+      ) AS "s3" ON "w"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w"."Id" = "s1"."WorkOrderId"
+      WHERE "w"."CustomerId" = @customerId
+      ORDER BY "w"."PlannedStartAt" DESC, "w"."Id", "v"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."Id", "s3"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@customerId='?' (DbType = Int32), @p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "n"."Id", "n"."CreatedAt", "n"."CustomerId", "n"."IsRead", "n"."Message", "n"."Title", "n"."WorkOrderId"
+      FROM "Notifications" AS "n"
+      WHERE "n"."CustomerId" = @customerId
+      ORDER BY "n"."CreatedAt" DESC
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."CustomerId"
+      FROM "Users" AS "u"
+      WHERE "u"."Id" = @userId
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      WHERE "c"."Id" = @p
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p1='?' (DbType = Int32), @p0='?' (Size = 19)], CommandType='Text', CommandTimeout='30']
+      UPDATE "Customers" SET "Phone" = @p0
+      WHERE "Id" = @p1
+      RETURNING 1;
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."CustomerId"
+      FROM "Users" AS "u"
+      WHERE "u"."Id" = @userId
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      WHERE "c"."Id" = @customerId
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Vehicles" AS "v"
+      WHERE "v"."CustomerId" = @customerId
+      ORDER BY "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Category", "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."Id", "s3"."Description", "s3"."Price", "s3"."ServiceItemId", "s3"."VehicleId", "s3"."WorkOrderId", "s3"."Id0", "s3"."ApproximatePurchaseIntervalDays", "s3"."Category", "s3"."EstimatedDurationMinutes", "s3"."Name", "s3"."Price0", "s3"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM "WorkOrders" AS "w"
+      INNER JOIN "Vehicles" AS "v" ON "w"."VehicleId" = "v"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w0"."Id", "w0"."Description", "w0"."Price", "w0"."ServiceItemId", "w0"."VehicleId", "w0"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w0"
+          INNER JOIN "Services" AS "s0" ON "w0"."ServiceItemId" = "s0"."Id"
+      ) AS "s3" ON "w"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w"."Id" = "s1"."WorkOrderId"
+      WHERE "w"."CustomerId" = @customerId
+      ORDER BY "w"."PlannedStartAt" DESC, "w"."Id", "v"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."Id", "s3"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@customerId='?' (DbType = Int32), @p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "n"."Id", "n"."CreatedAt", "n"."CustomerId", "n"."IsRead", "n"."Message", "n"."Title", "n"."WorkOrderId"
+      FROM "Notifications" AS "n"
+      WHERE "n"."CustomerId" = @customerId
+      ORDER BY "n"."CreatedAt" DESC
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."CustomerId"
+      FROM "Users" AS "u"
+      WHERE "u"."Id" = @userId
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      WHERE "c"."Id" = @p
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@userId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."CustomerId"
+      FROM "Users" AS "u"
+      WHERE "u"."Id" = @userId
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      WHERE "c"."Id" = @customerId
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Vehicles" AS "v"
+      WHERE "v"."CustomerId" = @customerId
+      ORDER BY "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Category", "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@customerId='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."Id", "s3"."Description", "s3"."Price", "s3"."ServiceItemId", "s3"."VehicleId", "s3"."WorkOrderId", "s3"."Id0", "s3"."ApproximatePurchaseIntervalDays", "s3"."Category", "s3"."EstimatedDurationMinutes", "s3"."Name", "s3"."Price0", "s3"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM "WorkOrders" AS "w"
+      INNER JOIN "Vehicles" AS "v" ON "w"."VehicleId" = "v"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w0"."Id", "w0"."Description", "w0"."Price", "w0"."ServiceItemId", "w0"."VehicleId", "w0"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w0"
+          INNER JOIN "Services" AS "s0" ON "w0"."ServiceItemId" = "s0"."Id"
+      ) AS "s3" ON "w"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w"."Id" = "s1"."WorkOrderId"
+      WHERE "w"."CustomerId" = @customerId
+      ORDER BY "w"."PlannedStartAt" DESC, "w"."Id", "v"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."Id", "s3"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@customerId='?' (DbType = Int32), @p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "n"."Id", "n"."CreatedAt", "n"."CustomerId", "n"."IsRead", "n"."Message", "n"."Title", "n"."WorkOrderId"
+      FROM "Notifications" AS "n"
+      WHERE "n"."CustomerId" = @customerId
+      ORDER BY "n"."CreatedAt" DESC
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[@model_Login='?' (Size = 5)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      WHERE "u"."Login" = @model_Login
+      LIMIT 2
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Users" AS "u"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Employees" AS "e"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Customers" AS "c"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "Services" AS "s"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT COUNT(*)
+      FROM "WorkOrders" AS "w"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u0"."Id", "u0"."CustomerId", "u0"."EmployeeId", "u0"."IsActive", "u0"."Login", "u0"."PasswordHash", "u0"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM (
+          SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role"
+          FROM "Users" AS "u"
+          ORDER BY "u"."Login"
+          LIMIT @p
+      ) AS "u0"
+      LEFT JOIN "Employees" AS "e" ON "u0"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u0"."CustomerId" = "c"."Id"
+      ORDER BY "u0"."Login"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          ORDER BY "c"."Name"
+          LIMIT @p
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Name", "c0"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Name"
+      LIMIT @p
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (1ms) [Parameters=[@p='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "w0"."Id", "w0"."ActualDurationMinutes", "w0"."ClientApprovedAt", "w0"."CompletedAt", "w0"."CreatedAt", "w0"."CustomerComment", "w0"."CustomerId", "w0"."InternalComment", "w0"."PlannedDurationMinutes", "w0"."PlannedStartAt", "w0"."ReceiverEmployeeId", "w0"."Status", "w0"."TotalCost", "w0"."VehicleId", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s2"."ApproximatePurchaseIntervalDays", "s2"."Category", "s2"."EstimatedDurationMinutes", "s2"."Name", "s2"."Price", "s2"."Type", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s3"."Email", "s3"."FullName", "s3"."Phone", "s3"."Position", "s4"."Id", "s4"."Description", "s4"."Price", "s4"."ServiceItemId", "s4"."VehicleId", "s4"."WorkOrderId", "s4"."Id0", "s4"."ApproximatePurchaseIntervalDays", "s4"."Category", "s4"."EstimatedDurationMinutes", "s4"."Name", "s4"."Price0", "s4"."Type", "d"."Id", "d"."CustomerId", "d"."EmployeeId", "d"."FileName", "d"."PerformedAt", "d"."Summary", "d"."VehicleId", "d"."WorkOrderId", "s1"."Id", "s1"."CreatedAt", "s1"."FileName", "s1"."Kind", "s1"."WorkOrderId"
+      FROM (
+          SELECT "w"."Id", "w"."ActualDurationMinutes", "w"."ClientApprovedAt", "w"."CompletedAt", "w"."CreatedAt", "w"."CustomerComment", "w"."CustomerId", "w"."InternalComment", "w"."PlannedDurationMinutes", "w"."PlannedStartAt", "w"."ReceiverEmployeeId", "w"."Status", "w"."TotalCost", "w"."VehicleId"
+          FROM "WorkOrders" AS "w"
+          ORDER BY "w"."PlannedStartAt" DESC
+          LIMIT @p
+      ) AS "w0"
+      INNER JOIN "Customers" AS "c" ON "w0"."CustomerId" = "c"."Id"
+      INNER JOIN "Vehicles" AS "v" ON "w0"."VehicleId" = "v"."Id"
+      INNER JOIN "Employees" AS "e" ON "w0"."ReceiverEmployeeId" = "e"."Id"
+      LEFT JOIN (
+          SELECT "o"."WorkOrderId", "o"."ServiceItemId", "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+          FROM "OrderServices" AS "o"
+          INNER JOIN "Services" AS "s" ON "o"."ServiceItemId" = "s"."Id"
+      ) AS "s2" ON "w0"."Id" = "s2"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w1"."WorkOrderId", "w1"."EmployeeId", "e0"."Id", "e0"."Email", "e0"."FullName", "e0"."Phone", "e0"."Position"
+          FROM "WorkOrderEmployees" AS "w1"
+          INNER JOIN "Employees" AS "e0" ON "w1"."EmployeeId" = "e0"."Id"
+      ) AS "s3" ON "w0"."Id" = "s3"."WorkOrderId"
+      LEFT JOIN (
+          SELECT "w2"."Id", "w2"."Description", "w2"."Price", "w2"."ServiceItemId", "w2"."VehicleId", "w2"."WorkOrderId", "s0"."Id" AS "Id0", "s0"."ApproximatePurchaseIntervalDays", "s0"."Category", "s0"."EstimatedDurationMinutes", "s0"."Name", "s0"."Price" AS "Price0", "s0"."Type"
+          FROM "WorkItems" AS "w2"
+          INNER JOIN "Services" AS "s0" ON "w2"."ServiceItemId" = "s0"."Id"
+      ) AS "s4" ON "w0"."Id" = "s4"."WorkOrderId"
+      LEFT JOIN "DiagnosticDocuments" AS "d" ON "w0"."Id" = "d"."WorkOrderId"
+      LEFT JOIN "SupportDocuments" AS "s1" ON "w0"."Id" = "s1"."WorkOrderId"
+      ORDER BY "w0"."PlannedStartAt" DESC, "w0"."Id", "c"."Id", "v"."Id", "e"."Id", "s2"."WorkOrderId", "s2"."ServiceItemId", "s2"."Id", "s3"."WorkOrderId", "s3"."EmployeeId", "s3"."Id", "s4"."Id", "s4"."Id0", "d"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e0"."Position"
+      FROM (
+          SELECT DISTINCT "e"."Position"
+          FROM "Employees" AS "e"
+      ) AS "e0"
+      ORDER BY "e0"."Position"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      ORDER BY "u"."Login"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      ORDER BY "c"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      ORDER BY "u"."Login"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      WHERE "u"."Id" = @id
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      ORDER BY "c"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@vehicleId='?' (DbType = Int32), @selectedCustomer_Id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Vehicles" AS "v"
+      WHERE "v"."Id" = @vehicleId AND "v"."CustomerId" = @selectedCustomer_Id
+      LIMIT 1
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[@id='?' (DbType = Int32)], CommandType='Text', CommandTimeout='30']
+      SELECT "c0"."Id", "c0"."Address", "c0"."Email", "c0"."Name", "c0"."Phone", "c0"."TaxNumber", "c0"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM (
+          SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+          FROM "Customers" AS "c"
+          WHERE "c"."Id" = @id
+          LIMIT 1
+      ) AS "c0"
+      LEFT JOIN "Vehicles" AS "v" ON "c0"."Id" = "v"."CustomerId"
+      ORDER BY "c0"."Id", "v"."PlateNumber"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type", "v"."Id", "v"."CustomerId", "v"."Make", "v"."Mileage", "v"."Model", "v"."PlateNumber", "v"."Year"
+      FROM "Customers" AS "c"
+      LEFT JOIN "Vehicles" AS "v" ON "c"."Id" = "v"."CustomerId"
+      ORDER BY "c"."Name", "c"."Id"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (2ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e0"."Position"
+      FROM (
+          SELECT DISTINCT "e"."Position"
+          FROM "Employees" AS "e"
+      ) AS "e0"
+      ORDER BY "e0"."Position"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "u"."Id", "u"."CustomerId", "u"."EmployeeId", "u"."IsActive", "u"."Login", "u"."PasswordHash", "u"."Role", "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position", "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Users" AS "u"
+      LEFT JOIN "Employees" AS "e" ON "u"."EmployeeId" = "e"."Id"
+      LEFT JOIN "Customers" AS "c" ON "u"."CustomerId" = "c"."Id"
+      ORDER BY "u"."Login"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "c"."Id", "c"."Address", "c"."Email", "c"."Name", "c"."Phone", "c"."TaxNumber", "c"."Type"
+      FROM "Customers" AS "c"
+      ORDER BY "c"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e"."Id", "e"."Email", "e"."FullName", "e"."Phone", "e"."Position"
+      FROM "Employees" AS "e"
+      ORDER BY "e"."FullName"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "e0"."Position"
+      FROM (
+          SELECT DISTINCT "e"."Position"
+          FROM "Employees" AS "e"
+      ) AS "e0"
+      ORDER BY "e0"."Position"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s0"."Category"
+      FROM (
+          SELECT DISTINCT "s"."Category"
+          FROM "Services" AS "s"
+      ) AS "s0"
+      ORDER BY "s0"."Category"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s0"."Type"
+      FROM (
+          SELECT DISTINCT "s"."Type"
+          FROM "Services" AS "s"
+      ) AS "s0"
+      ORDER BY "s0"."Type"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s0"."Category"
+      FROM (
+          SELECT DISTINCT "s"."Category"
+          FROM "Services" AS "s"
+      ) AS "s0"
+      ORDER BY "s0"."Category"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s0"."Type"
+      FROM (
+          SELECT DISTINCT "s"."Type"
+          FROM "Services" AS "s"
+      ) AS "s0"
+      ORDER BY "s0"."Type"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s"."Id", "s"."ApproximatePurchaseIntervalDays", "s"."Category", "s"."EstimatedDurationMinutes", "s"."Name", "s"."Price", "s"."Type"
+      FROM "Services" AS "s"
+      ORDER BY "s"."Name"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s0"."Category"
+      FROM (
+          SELECT DISTINCT "s"."Category"
+          FROM "Services" AS "s"
+      ) AS "s0"
+      ORDER BY "s0"."Category"
+info: Microsoft.EntityFrameworkCore.Database.Command[20101]
+      Executed DbCommand (0ms) [Parameters=[], CommandType='Text', CommandTimeout='30']
+      SELECT "s0"."Type"
+      FROM (
+          SELECT DISTINCT "s"."Type"
+          FROM "Services" AS "s"
+      ) AS "s0"
+      ORDER BY "s0"."Type"

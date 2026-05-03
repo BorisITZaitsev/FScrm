@@ -1,0 +1,133 @@
+@model AdminUsersSectionViewModel
+@{
+    ViewData["Title"] = "Раздел: Пользователи | Fit Service CRM";
+    var selected = Model.SelectedUser ?? new AppUser { IsActive = true };
+    var editMode = Model.IsEdit;
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Пользователи</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+<section class="admin-section @(Model.ShowCard ? "with-card" : "list-only")">
+    <div class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Список пользователей</h2>
+                <span>Поиск по логину или ФИО</span>
+            </div>
+            <a class="button button-primary button-small" asp-action="Users" asp-route-create="true">Создать</a>
+        </div>
+        <form method="get" class="filter-bar">
+            <input name="q" value="@Model.Query" placeholder="Логин, ФИО или клиент" />
+            <select name="role">
+                <option value="">Все роли</option>
+                @foreach (var role in Enum.GetValues<UserRole>())
+                {
+                    <option value="@role" selected="@(Model.Role == role)">@role.Label()</option>
+                }
+            </select>
+            <select name="isActive">
+                <option value="">Все состояния</option>
+                <option value="true" selected="@(Model.IsActive == true)">Активные</option>
+                <option value="false" selected="@(Model.IsActive == false)">Отключенные</option>
+            </select>
+            <select name="sort">
+                <option value="login" selected="@(Model.Sort == "login")">Логин А-Я</option>
+                <option value="login_desc" selected="@(Model.Sort == "login_desc")">Логин Я-А</option>
+                <option value="role" selected="@(Model.Sort == "role")">Роль А-Я</option>
+                <option value="role_desc" selected="@(Model.Sort == "role_desc")">Роль Я-А</option>
+                <option value="name" selected="@(Model.Sort == "name")">Имя А-Я</option>
+                <option value="name_desc" selected="@(Model.Sort == "name_desc")">Имя Я-А</option>
+            </select>
+            <button class="button" type="submit">Применить</button>
+        </form>
+        <div class="section-list">
+            @foreach (var user in Model.Users)
+            {
+                <a class="section-list-row @(Model.SelectedUser?.Id == user.Id ? "active" : "")"
+                   asp-action="Users"
+                   asp-route-id="@user.Id"
+                   asp-route-q="@Model.Query"
+                   asp-route-sort="@Model.Sort"
+                   asp-route-role="@Model.Role"
+                   asp-route-isActive="@Model.IsActive">
+                    <span>
+                        <strong>@user.Login</strong>
+                        <small>@(user.Employee?.FullName ?? user.Customer?.Name ?? "связь не задана")</small>
+                    </span>
+                    <span class="badge badge-neutral">@user.Role.Label()</span>
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model.ShowCard)
+    {
+        <aside class="panel object-card">
+            <div class="panel-title">
+                <div>
+                    <h2>@(Model.IsCreate ? "Новый пользователь" : selected.Login)</h2>
+                    <span>@(editMode ? "Режим изменения" : "Режим просмотра")</span>
+                </div>
+                @if (!editMode && !Model.IsCreate)
+                {
+                    <a class="button button-small" asp-action="Users" asp-route-id="@selected.Id" asp-route-edit="true">Редактировать</a>
+                }
+            </div>
+            <form asp-action="SaveUser" method="post" class="form-grid compact">
+                @Html.AntiForgeryToken()
+                @if (!Model.IsCreate)
+                {
+                    <input type="hidden" name="id" value="@selected.Id" />
+                }
+                <fieldset disabled="@(!editMode)">
+                    <label><span>Логин</span><input name="login" value="@selected.Login" required /></label>
+                    <label><span>Пароль</span><input name="password" type="password" placeholder="@(Model.IsCreate ? "Задайте пароль" : "Оставьте пустым без изменений")" required="@Model.IsCreate" /></label>
+                    <label>
+                        <span>Роль</span>
+                        <select name="role">
+                            @foreach (var role in Enum.GetValues<UserRole>())
+                            {
+                                <option value="@role" selected="@(selected.Role == role)">@role.Label()</option>
+                            }
+                        </select>
+                    </label>
+                    <label>
+                        <span>Сотрудник</span>
+                        <select name="employeeId">
+                            <option value="">Не связан</option>
+                            @foreach (var employee in Model.Employees)
+                            {
+                                <option value="@employee.Id" selected="@(selected.EmployeeId == employee.Id)">@employee.FullName</option>
+                            }
+                        </select>
+                    </label>
+                    <label>
+                        <span>Клиент</span>
+                        <select name="customerId">
+                            <option value="">Не связан</option>
+                            @foreach (var customer in Model.Customers)
+                            {
+                                <option value="@customer.Id" selected="@(selected.CustomerId == customer.Id)">@customer.Name</option>
+                            }
+                        </select>
+                    </label>
+                    <label class="check-label">
+                        <input type="hidden" name="isActive" value="false" />
+                        <input type="checkbox" name="isActive" value="true" checked="@selected.IsActive" />
+                        <span>Учетная запись активна</span>
+                    </label>
+                </fieldset>
+                @if (editMode)
+                {
+                    <button class="button button-primary" type="submit">Сохранить</button>
+                }
+            </form>
+        </aside>
+    }
+</section>

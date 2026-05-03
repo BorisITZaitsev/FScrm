@@ -1,0 +1,94 @@
+@model AdminEmployeesSectionViewModel
+@{
+    ViewData["Title"] = "Раздел: Сотрудники | Fit Service CRM";
+    var selected = Model.SelectedEmployee ?? new Employee();
+    var editMode = Model.IsEdit;
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Сотрудники</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+<section class="admin-section @(Model.ShowCard ? "with-card" : "list-only")">
+    <div class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Список сотрудников</h2>
+                <span>Поиск по ФИО, телефону или ТС</span>
+            </div>
+            <a class="button button-primary button-small" asp-action="Employees" asp-route-create="true">Создать</a>
+        </div>
+        <form method="get" class="filter-bar">
+            <input name="q" value="@Model.Query" placeholder="ФИО, телефон, гос. номер" />
+            <select name="position">
+                <option value="">Все должности</option>
+                @foreach (var position in Model.Positions)
+                {
+                    <option value="@position" selected="@(Model.Position == position)">@position</option>
+                }
+            </select>
+            <select name="sort">
+                <option value="name" selected="@(Model.Sort == "name")">ФИО А-Я</option>
+                <option value="name_desc" selected="@(Model.Sort == "name_desc")">ФИО Я-А</option>
+                <option value="phone" selected="@(Model.Sort == "phone")">Телефон А-Я</option>
+                <option value="phone_desc" selected="@(Model.Sort == "phone_desc")">Телефон Я-А</option>
+                <option value="position" selected="@(Model.Sort == "position")">Должность А-Я</option>
+                <option value="position_desc" selected="@(Model.Sort == "position_desc")">Должность Я-А</option>
+            </select>
+            <button class="button" type="submit">Применить</button>
+        </form>
+        <div class="section-list">
+            @foreach (var employee in Model.Employees)
+            {
+                <a class="section-list-row @(Model.SelectedEmployee?.Id == employee.Id ? "active" : "")"
+                   asp-action="Employees"
+                   asp-route-id="@employee.Id"
+                   asp-route-q="@Model.Query"
+                   asp-route-sort="@Model.Sort"
+                   asp-route-position="@Model.Position">
+                    <span>
+                        <strong>@employee.FullName</strong>
+                        <small>@employee.Position · @employee.Phone</small>
+                    </span>
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model.ShowCard)
+    {
+        <aside class="panel object-card">
+            <div class="panel-title">
+                <div>
+                    <h2>@(Model.IsCreate ? "Новый сотрудник" : selected.FullName)</h2>
+                    <span>@(editMode ? "Режим изменения" : "Режим просмотра")</span>
+                </div>
+                @if (!editMode && !Model.IsCreate)
+                {
+                    <a class="button button-small" asp-action="Employees" asp-route-id="@selected.Id" asp-route-edit="true">Редактировать</a>
+                }
+            </div>
+            <form asp-action="SaveEmployee" method="post" class="form-grid compact">
+                @Html.AntiForgeryToken()
+                @if (!Model.IsCreate)
+                {
+                    <input type="hidden" name="id" value="@selected.Id" />
+                }
+                <fieldset disabled="@(!editMode)">
+                    <label><span>ФИО</span><input name="fullName" value="@selected.FullName" required /></label>
+                    <label><span>Телефон</span><input name="phone" value="@selected.Phone" required /></label>
+                    <label><span>Email</span><input name="email" type="email" value="@selected.Email" required /></label>
+                    <label><span>Должность</span><input name="position" value="@selected.Position" required /></label>
+                </fieldset>
+                @if (editMode)
+                {
+                    <button class="button button-primary" type="submit">Сохранить</button>
+                }
+            </form>
+        </aside>
+    }
+</section>

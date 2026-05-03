@@ -1,0 +1,183 @@
+@model AdminCustomersSectionViewModel
+@{
+    ViewData["Title"] = "Раздел: Клиенты | Fit Service CRM";
+    var selected = Model.SelectedCustomer ?? new Customer();
+    var editMode = Model.IsEdit;
+    var vehicleMode = Model.ShowVehicleCard;
+    var selectedVehicle = Model.SelectedVehicle ?? new Vehicle
+    {
+        CustomerId = selected.Id,
+        Year = DateTime.Today.Year
+    };
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Клиенты</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+<section class="admin-section @(vehicleMode ? "with-card customer-vehicle-mode" : Model.ShowCard ? "with-card" : "list-only")">
+    @if (!vehicleMode)
+    {
+        <div class="panel">
+            <div class="panel-title">
+                <div>
+                    <h2>Список клиентов</h2>
+                    <span>Поиск по ФИО, названию или ТС</span>
+                </div>
+                <a class="button button-primary button-small" asp-action="Customers" asp-route-create="true">Создать</a>
+            </div>
+            <form method="get" class="filter-bar">
+                <input name="q" value="@Model.Query" placeholder="Клиент, телефон, гос. номер" />
+                <select name="type">
+                    <option value="">Все типы</option>
+                    <option value="@CustomerType.Individual" selected="@(Model.Type == CustomerType.Individual)">Физическое лицо</option>
+                    <option value="@CustomerType.Company" selected="@(Model.Type == CustomerType.Company)">Организация</option>
+                </select>
+                <select name="sort">
+                    <option value="name" selected="@(Model.Sort == "name")">Имя А-Я</option>
+                    <option value="name_desc" selected="@(Model.Sort == "name_desc")">Имя Я-А</option>
+                    <option value="phone" selected="@(Model.Sort == "phone")">Телефон А-Я</option>
+                    <option value="phone_desc" selected="@(Model.Sort == "phone_desc")">Телефон Я-А</option>
+                    <option value="type" selected="@(Model.Sort == "type")">Тип А-Я</option>
+                    <option value="type_desc" selected="@(Model.Sort == "type_desc")">Тип Я-А</option>
+                </select>
+                <button class="button" type="submit">Применить</button>
+            </form>
+            <div class="section-list">
+                @foreach (var customer in Model.Customers)
+                {
+                    <a class="section-list-row @(Model.SelectedCustomer?.Id == customer.Id ? "active" : "")"
+                       asp-action="Customers"
+                       asp-route-id="@customer.Id"
+                       asp-route-q="@Model.Query"
+                       asp-route-sort="@Model.Sort"
+                       asp-route-type="@Model.Type">
+                        <span>
+                            <strong>@customer.Name</strong>
+                            <small>@customer.Type.Label() · @customer.Vehicles.Count ТС · @customer.Phone</small>
+                        </span>
+                    </a>
+                }
+            </div>
+        </div>
+    }
+
+    @if (Model.ShowCard)
+    {
+        <aside class="panel object-card">
+            <div class="panel-title">
+                <div>
+                    <h2>@(Model.IsCreate ? "Новый клиент" : selected.Name)</h2>
+                    <span>@(editMode ? "Режим изменения" : "Режим просмотра")</span>
+                </div>
+                <div class="actions-row">
+                    @if (vehicleMode)
+                    {
+                        <a class="button button-small" asp-action="Customers" asp-route-id="@selected.Id" asp-route-edit="true">К клиенту</a>
+                    }
+                    @if (!editMode && !Model.IsCreate)
+                    {
+                        <a class="button button-small" asp-action="Customers" asp-route-id="@selected.Id" asp-route-edit="true">Редактировать</a>
+                    }
+                </div>
+            </div>
+            <form asp-action="SaveCustomer" method="post" class="form-grid compact">
+                @Html.AntiForgeryToken()
+                @if (!Model.IsCreate)
+                {
+                    <input type="hidden" name="id" value="@selected.Id" />
+                }
+                <fieldset disabled="@(!editMode)">
+                    <label>
+                        <span>Тип</span>
+                        <select name="type">
+                            <option value="@CustomerType.Individual" selected="@(selected.Type == CustomerType.Individual)">Физическое лицо</option>
+                            <option value="@CustomerType.Company" selected="@(selected.Type == CustomerType.Company)">Организация</option>
+                        </select>
+                    </label>
+                    <label><span>ФИО / название</span><input name="name" value="@selected.Name" required /></label>
+                    <label><span>Телефон</span><input name="phone" value="@selected.Phone" required /></label>
+                    <label><span>Email</span><input name="email" type="email" value="@selected.Email" required /></label>
+                    <label><span>Адрес</span><input name="address" value="@selected.Address" required /></label>
+                    <label><span>ИНН</span><input name="taxNumber" value="@selected.TaxNumber" /></label>
+                </fieldset>
+                @if (editMode)
+                {
+                    <button class="button button-primary" type="submit">Сохранить клиента</button>
+                }
+            </form>
+
+            @if (!Model.IsCreate)
+            {
+                <div class="subsection vehicles-subsection">
+                    <div class="section-subtitle">
+                        <h3>Автомобили клиента</h3>
+                        @if (editMode)
+                        {
+                            <a class="button button-small" asp-action="Customers" asp-route-id="@selected.Id" asp-route-edit="true" asp-route-vehicleCreate="true">Добавить автомобиль</a>
+                        }
+                    </div>
+                    @if (selected.Vehicles.Count == 0)
+                    {
+                        <p class="empty-inline">Автомобили пока не добавлены.</p>
+                    }
+                    @foreach (var vehicle in selected.Vehicles)
+                    {
+                        <div class="mini-row vehicle-row">
+                            <span>@vehicle.PlateNumber · @vehicle.Make @vehicle.Model</span>
+                            <strong>@vehicle.Year · @vehicle.Mileage км</strong>
+                            @if (editMode)
+                            {
+                                <a class="button button-small" asp-action="Customers" asp-route-id="@selected.Id" asp-route-edit="true" asp-route-vehicleId="@vehicle.Id" asp-route-vehicleEdit="true">Карточка</a>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </aside>
+    }
+
+    @if (vehicleMode)
+    {
+        <aside class="panel object-card vehicle-card">
+            <div class="panel-title">
+                <div>
+                    <h2>@(Model.IsVehicleCreate ? "Новый автомобиль" : $"{selectedVehicle.Make} {selectedVehicle.Model}")</h2>
+                    <span>Карточка транспортного средства</span>
+                </div>
+                <a class="button button-small" asp-action="Customers" asp-route-id="@selected.Id" asp-route-edit="true">Закрыть</a>
+            </div>
+
+            <form asp-action="SaveVehicle" method="post" class="form-grid compact">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="customerId" value="@selected.Id" />
+                @if (!Model.IsVehicleCreate)
+                {
+                    <input type="hidden" name="id" value="@selectedVehicle.Id" />
+                }
+                <fieldset>
+                    <label><span>Марка</span><input name="make" value="@selectedVehicle.Make" required /></label>
+                    <label><span>Модель</span><input name="model" value="@selectedVehicle.Model" required /></label>
+                    <label><span>Гос. номер</span><input name="plateNumber" value="@selectedVehicle.PlateNumber" required /></label>
+                    <label><span>Год выпуска</span><input name="year" type="number" min="1980" max="2100" value="@selectedVehicle.Year" required /></label>
+                    <label><span>Пробег, км</span><input name="mileage" type="number" min="0" value="@selectedVehicle.Mileage" required /></label>
+                </fieldset>
+                <button class="button button-primary" type="submit">Сохранить автомобиль</button>
+            </form>
+
+            @if (!Model.IsVehicleCreate)
+            {
+                <form asp-action="DeleteVehicle" method="post" class="danger-zone">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@selectedVehicle.Id" />
+                    <input type="hidden" name="customerId" value="@selected.Id" />
+                    <button class="button button-danger" type="submit">Удалить автомобиль</button>
+                </form>
+            }
+        </aside>
+    }
+</section>

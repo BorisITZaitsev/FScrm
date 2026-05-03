@@ -1,0 +1,107 @@
+@model AdminServicesSectionViewModel
+@{
+    ViewData["Title"] = "Раздел: Услуги | Fit Service CRM";
+    var selected = Model.SelectedService ?? new ServiceItem { EstimatedDurationMinutes = 60, ApproximatePurchaseIntervalDays = 180 };
+    var editMode = Model.IsEdit;
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Услуги</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+<section class="admin-section @(Model.ShowCard ? "with-card" : "list-only")">
+    <div class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Список услуг</h2>
+                <span>Поиск по наименованию, фильтр по виду и типу</span>
+            </div>
+            <a class="button button-primary button-small" asp-action="Services" asp-route-create="true">Создать</a>
+        </div>
+        <form method="get" class="filter-bar">
+            <input name="q" value="@Model.Query" placeholder="Наименование услуги" />
+            <select name="category">
+                <option value="">Все виды</option>
+                @foreach (var category in Model.Categories)
+                {
+                    <option value="@category" selected="@(Model.Category == category)">@category</option>
+                }
+            </select>
+            <select name="type">
+                <option value="">Все типы</option>
+                @foreach (var type in Model.Types)
+                {
+                    <option value="@type" selected="@(Model.Type == type)">@type</option>
+                }
+            </select>
+            <select name="sort">
+                <option value="name" selected="@(Model.Sort == "name")">Название А-Я</option>
+                <option value="name_desc" selected="@(Model.Sort == "name_desc")">Название Я-А</option>
+                <option value="category" selected="@(Model.Sort == "category")">Вид А-Я</option>
+                <option value="category_desc" selected="@(Model.Sort == "category_desc")">Вид Я-А</option>
+                <option value="type" selected="@(Model.Sort == "type")">Тип А-Я</option>
+                <option value="type_desc" selected="@(Model.Sort == "type_desc")">Тип Я-А</option>
+                <option value="price" selected="@(Model.Sort == "price")">Цена по возрастанию</option>
+                <option value="price_desc" selected="@(Model.Sort == "price_desc")">Цена по убыванию</option>
+            </select>
+            <button class="button" type="submit">Применить</button>
+        </form>
+        <div class="section-list">
+            @foreach (var service in Model.Services)
+            {
+                <a class="section-list-row @(Model.SelectedService?.Id == service.Id ? "active" : "")"
+                   asp-action="Services"
+                   asp-route-id="@service.Id"
+                   asp-route-q="@Model.Query"
+                   asp-route-sort="@Model.Sort"
+                   asp-route-category="@Model.Category"
+                   asp-route-type="@Model.Type">
+                    <span>
+                        <strong>@service.Name</strong>
+                        <small>@service.Category · @service.Type · @service.EstimatedDurationMinutes мин.</small>
+                    </span>
+                    <strong>@service.Price.Money()</strong>
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model.ShowCard)
+    {
+        <aside class="panel object-card">
+            <div class="panel-title">
+                <div>
+                    <h2>@(Model.IsCreate ? "Новая услуга" : selected.Name)</h2>
+                    <span>@(editMode ? "Режим изменения" : "Режим просмотра")</span>
+                </div>
+                @if (!editMode && !Model.IsCreate)
+                {
+                    <a class="button button-small" asp-action="Services" asp-route-id="@selected.Id" asp-route-edit="true">Редактировать</a>
+                }
+            </div>
+            <form asp-action="SaveService" method="post" class="form-grid compact">
+                @Html.AntiForgeryToken()
+                @if (!Model.IsCreate)
+                {
+                    <input type="hidden" name="id" value="@selected.Id" />
+                }
+                <fieldset disabled="@(!editMode)">
+                    <label class="wide"><span>Наименование</span><input name="name" value="@selected.Name" required /></label>
+                    <label><span>Вид</span><input name="category" value="@selected.Category" required /></label>
+                    <label><span>Тип</span><input name="type" value="@selected.Type" required /></label>
+                    <label><span>Примерная длительность, мин.</span><input name="duration" type="number" min="1" value="@selected.EstimatedDurationMinutes" required /></label>
+                    <label><span>Стоимость</span><input name="price" type="number" min="0" step="0.01" value="@selected.Price" required /></label>
+                    <label><span>Частота покупки, дней</span><input name="intervalDays" type="number" min="1" value="@selected.ApproximatePurchaseIntervalDays" required /></label>
+                </fieldset>
+                @if (editMode)
+                {
+                    <button class="button button-primary" type="submit">Сохранить</button>
+                }
+            </form>
+        </aside>
+    }
+</section>

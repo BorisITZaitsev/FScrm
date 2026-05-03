@@ -1,0 +1,173 @@
+@model ClientDashboardViewModel
+@{
+    ViewData["Title"] = "Клиент | Fit Service CRM";
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Клиент сервиса</p>
+        <h1>@Model.Customer.Name</h1>
+    </div>
+    <div class="quick-stats">
+        <div><strong>@Model.Vehicles.Count</strong><span>ТС</span></div>
+        <div><strong>@Model.Orders.Count</strong><span>заказов</span></div>
+        <div><strong>@Model.Notifications.Count(item => !item.IsRead)</strong><span>новых уведомлений</span></div>
+    </div>
+</section>
+
+<section class="layout-grid two">
+    <div class="panel">
+        <div class="panel-title">
+            <h2>Профиль</h2>
+            <span>Контактные данные</span>
+        </div>
+        <form asp-action="UpdateProfile" method="post" class="form-grid compact">
+            @Html.AntiForgeryToken()
+            <label><span>ФИО / название</span><input name="name" value="@Model.Customer.Name" required /></label>
+            <label><span>Телефон</span><input name="phone" value="@Model.Customer.Phone" required /></label>
+            <label><span>Email</span><input name="email" type="email" value="@Model.Customer.Email" required /></label>
+            <label><span>Адрес</span><input name="address" value="@Model.Customer.Address" required /></label>
+            <button class="button button-primary" type="submit">Сохранить</button>
+        </form>
+    </div>
+
+    <div class="panel">
+        <div class="panel-title">
+            <h2>Транспортные средства</h2>
+            <span>Автомобили клиента</span>
+        </div>
+        <div class="stack-list">
+            @foreach (var vehicle in Model.Vehicles)
+            {
+                <article class="list-row">
+                    <div>
+                        <strong>@vehicle.Make @vehicle.Model</strong>
+                        <span>@vehicle.PlateNumber · @vehicle.Year · @vehicle.Mileage км</span>
+                    </div>
+                </article>
+            }
+        </div>
+        <form asp-action="AddVehicle" method="post" class="form-grid compact">
+            @Html.AntiForgeryToken()
+            <label><span>Марка</span><input name="make" required /></label>
+            <label><span>Модель</span><input name="model" required /></label>
+            <label><span>Гос. номер</span><input name="plateNumber" required /></label>
+            <label><span>Год</span><input name="year" type="number" min="1980" value="2022" required /></label>
+            <label><span>Пробег</span><input name="mileage" type="number" min="0" value="0" required /></label>
+            <button class="button button-primary" type="submit">Добавить ТС</button>
+        </form>
+    </div>
+</section>
+
+<section class="layout-grid two">
+    <div class="panel">
+        <div class="panel-title">
+            <h2>Запись</h2>
+            <span>Диагностика или услуга</span>
+        </div>
+        <form asp-action="Book" method="post" class="form-grid compact">
+            @Html.AntiForgeryToken()
+            <label>
+                <span>ТС</span>
+                <select name="vehicleId" required>
+                    @foreach (var vehicle in Model.Vehicles)
+                    {
+                        <option value="@vehicle.Id">@vehicle.PlateNumber · @vehicle.Make @vehicle.Model</option>
+                    }
+                </select>
+            </label>
+            <label>
+                <span>Услуга</span>
+                <select name="serviceId" required>
+                    @foreach (var service in Model.Services)
+                    {
+                        <option value="@service.Id">@service.Name · @service.Price.Money()</option>
+                    }
+                </select>
+            </label>
+            <label><span>Дата и время</span><input name="plannedStartAt" type="datetime-local" value="@DateTime.Now.AddDays(2).ToString("yyyy-MM-ddTHH:mm")" required /></label>
+            <label class="wide"><span>Комментарий</span><input name="comment" /></label>
+            <button class="button button-primary" type="submit">Записаться</button>
+        </form>
+    </div>
+
+    <div class="panel">
+        <div class="panel-title">
+            <h2>Уведомления</h2>
+            <span>Завершение и задержки работ</span>
+        </div>
+        <div class="stack-list">
+            @foreach (var notification in Model.Notifications)
+            {
+                <article class="notification @(notification.IsRead ? "read" : "")">
+                    <div>
+                        <strong>@notification.Title</strong>
+                        <span>@notification.CreatedAt.ToString("dd.MM.yyyy HH:mm")</span>
+                        <p>@notification.Message</p>
+                    </div>
+                    @if (!notification.IsRead)
+                    {
+                        <form asp-action="MarkNotificationRead" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="notificationId" value="@notification.Id" />
+                            <button class="button button-small" type="submit">Прочитано</button>
+                        </form>
+                    }
+                </article>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="panel-title">
+        <h2>История обслуживания</h2>
+        <span>Работы по транспортным средствам</span>
+    </div>
+    <div class="order-grid client-orders">
+        @foreach (var order in Model.Orders)
+        {
+            <article class="order-card">
+                <header>
+                    <div>
+                        <strong>#@order.Id · @order.Vehicle?.PlateNumber</strong>
+                        <span>@order.PlannedStartAt.ToString("dd.MM.yyyy HH:mm")</span>
+                    </div>
+                    <span class="@order.Status.BadgeClass()">@order.Status.Label()</span>
+                </header>
+                <dl class="meta-grid">
+                    <div><dt>Услуги</dt><dd>@string.Join(", ", order.OrderServices.Select(item => item.ServiceItem?.Name))</dd></div>
+                    <div><dt>Работы</dt><dd>@order.WorkItems.Count</dd></div>
+                    <div><dt>Документы</dt><dd>@(order.DiagnosticDocuments.Count + order.SupportDocuments.Count)</dd></div>
+                    <div><dt>Итого</dt><dd>@order.TotalCost.Money()</dd></div>
+                </dl>
+                @if (order.Status == WorkOrderStatus.AwaitingApproval)
+                {
+                    <div class="actions-row">
+                        <form asp-action="ApproveOrder" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="orderId" value="@order.Id" />
+                            <input type="hidden" name="approved" value="true" />
+                            <button class="button button-primary button-small" type="submit">Согласовать</button>
+                        </form>
+                        <form asp-action="ApproveOrder" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="orderId" value="@order.Id" />
+                            <input type="hidden" name="approved" value="false" />
+                            <button class="button button-danger button-small" type="submit">Отклонить</button>
+                        </form>
+                    </div>
+                }
+                <div class="subsection">
+                    @foreach (var work in order.WorkItems)
+                    {
+                        <div class="mini-row">
+                            <span>@work.Description</span>
+                            <strong>@work.Price.Money()</strong>
+                        </div>
+                    }
+                </div>
+            </article>
+        }
+    </div>
+</section>
