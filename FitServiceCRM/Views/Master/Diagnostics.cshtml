@@ -1,0 +1,147 @@
+@model MasterDiagnosticsSectionViewModel
+@{
+    ViewData["Title"] = "Диагностика | Мастер-приемщик";
+    var firstCustomer = Model.Customers.FirstOrDefault();
+    var selected = Model.SelectedDiagnostic ?? new DiagnosticConclusion
+    {
+        CustomerId = firstCustomer?.Id ?? 0,
+        VehicleId = firstCustomer?.Vehicles.FirstOrDefault()?.Id ?? 0,
+        ReceiverEmployeeId = Model.CurrentEmployeeId,
+        Status = DiagnosticConclusionStatus.Draft
+    };
+    var availableVehicles = Model.Vehicles.Where(vehicle => vehicle.CustomerId == selected.CustomerId).ToList();
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Диагностика</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+<section class="admin-section @(Model.ShowCard ? "with-card" : "list-only")">
+    <div class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Список диагностических заключений</h2>
+                <span>Поиск по клиенту, ТС, VIN и статусу</span>
+            </div>
+            <a class="button button-primary button-small" asp-action="Diagnostics" asp-route-create="true" asp-route-edit="true">Ввести заключение диагностики</a>
+        </div>
+        <form method="get" class="filter-bar">
+            <input name="q" value="@Model.Query" placeholder="Клиент, марка, модель, госномер, VIN" />
+            <select name="status">
+                <option value="">Все статусы</option>
+                @foreach (var item in Enum.GetValues<DiagnosticConclusionStatus>())
+                {
+                    <option value="@item" selected="@(Model.Status == item)">@item.Label()</option>
+                }
+            </select>
+            <input name="from" type="date" value="@Model.From?.ToString("yyyy-MM-dd")" />
+            <input name="to" type="date" value="@Model.To?.ToString("yyyy-MM-dd")" />
+            <select name="sort">
+                <option value="date_desc" selected="@(Model.Sort == "date_desc")">Дата ↓</option>
+                <option value="date" selected="@(Model.Sort == "date")">Дата ↑</option>
+                <option value="status" selected="@(Model.Sort == "status")">Статус</option>
+            </select>
+            <button class="button" type="submit">Применить</button>
+        </form>
+        <div class="section-list">
+            @foreach (var diagnostic in Model.Diagnostics)
+            {
+                <a class="section-list-row @(Model.SelectedDiagnostic?.Id == diagnostic.Id ? "active" : "")" asp-action="Diagnostics" asp-route-id="@diagnostic.Id">
+                    <span>
+                        <strong>@diagnostic.Vehicle?.PlateNumber · @diagnostic.Vehicle?.Make @diagnostic.Vehicle?.Model</strong>
+                        <small>@diagnostic.Customer?.Name · @diagnostic.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
+                    </span>
+                    <span class="@diagnostic.Status.BadgeClass()">@diagnostic.Status.Label()</span>
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model.ShowCard)
+    {
+        <aside class="panel object-card">
+            <div class="panel-title">
+                <div>
+                    <h2>@(Model.IsCreate ? "Новое диагностическое заключение" : $"Диагностика {selected.Vehicle?.PlateNumber}")</h2>
+                    <span>@(Model.IsEdit ? "Режим редактирования" : "Режим просмотра")</span>
+                </div>
+                @if (!Model.IsEdit && Model.SelectedDiagnostic is not null && Model.SelectedDiagnostic.Status != DiagnosticConclusionStatus.CustomerAcknowledged)
+                {
+                    <a class="button button-small" asp-action="Diagnostics" asp-route-id="@Model.SelectedDiagnostic.Id" asp-route-edit="true">Редактировать</a>
+                }
+            </div>
+            <form asp-action="SaveDiagnostic" method="post" class="form-grid compact">
+                @Html.AntiForgeryToken()
+                @if (!Model.IsCreate)
+                {
+                    <input type="hidden" name="id" value="@selected.Id" />
+                }
+                <fieldset disabled="@(!Model.IsEdit)">
+                    <label>
+                        <span>Клиент</span>
+                        <select name="customerId">
+                            @foreach (var customer in Model.Customers)
+                            {
+                                <option value="@customer.Id" selected="@(selected.CustomerId == customer.Id)">@customer.Name</option>
+                            }
+                        </select>
+                    </label>
+                    <label>
+                        <span>Транспортное средство</span>
+                        <select name="vehicleId">
+                            @foreach (var vehicle in availableVehicles)
+                            {
+                                <option value="@vehicle.Id" selected="@(selected.VehicleId == vehicle.Id)">@vehicle.PlateNumber · @vehicle.Make @vehicle.Model</option>
+                            }
+                        </select>
+                    </label>
+                    <label>
+                        <span>Связанный заказ-наряд</span>
+                        <select name="workOrderId">
+                            <option value="">Не привязан</option>
+                            @foreach (var order in Model.Orders.Where(order => order.CustomerId == selected.CustomerId))
+                            {
+                                <option value="@order.Id" selected="@(selected.WorkOrderId == order.Id)">@order.OrderNumber</option>
+                            }
+                        </select>
+                    </label>
+                    <label>
+                        <span>Статус</span>
+                        <select name="status">
+                            @foreach (var item in Enum.GetValues<DiagnosticConclusionStatus>())
+                            {
+                                <option value="@item" selected="@(selected.Status == item)">@item.Label()</option>
+                            }
+                        </select>
+                    </label>
+                    <label class="wide"><span>Результат диагностики</span><textarea name="diagnosticResult" rows="4">@selected.DiagnosticResult</textarea></label>
+                    <label class="wide"><span>Рекомендации</span><textarea name="recommendations" rows="4">@selected.Recommendations</textarea></label>
+                </fieldset>
+                @if (Model.IsEdit)
+                {
+                    <button class="button button-primary" type="submit">Сохранить</button>
+                }
+            </form>
+
+            @if (Model.SelectedDiagnostic is not null && Model.SelectedDiagnostic.WorkOrderId is null)
+            {
+                <div class="actions-row top-gap">
+                    <a class="button button-primary" asp-action="CreateOrderFromDiagnostic" asp-route-diagnosticId="@Model.SelectedDiagnostic.Id">Создать заказ-наряд на основе диагностики</a>
+                </div>
+            }
+        </aside>
+    }
+    else
+    {
+        <aside class="panel empty-state-panel">
+            <div class="empty-state">
+                <p>Заключение не выбрано.</p>
+                <a class="button button-primary" asp-action="Diagnostics" asp-route-create="true" asp-route-edit="true">Ввести заключение диагностики</a>
+            </div>
+        </aside>
+    }
+</section>

@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("FitServiceCRM")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("Fitservicecrm")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
-[assembly: System.Reflection.AssemblyProductAttribute("FitServiceCRM")]
-[assembly: System.Reflection.AssemblyTitleAttribute("FitServiceCRM")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f430e78a68e53d50b5676c56650e6e9f84fe40c6")]
+[assembly: System.Reflection.AssemblyProductAttribute("Fitservicecrm")]
+[assembly: System.Reflection.AssemblyTitleAttribute("Fitservicecrm")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // Создано классом WriteCodeFragment MSBuild.

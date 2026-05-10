@@ -1,8 +1,11 @@
 @model AdminServicesSectionViewModel
 @{
     ViewData["Title"] = "Раздел: Услуги | Fit Service CRM";
-    var selected = Model.SelectedService ?? new ServiceItem { EstimatedDurationMinutes = 60, ApproximatePurchaseIntervalDays = 180 };
+    var selected = Model.SelectedService ?? new ServiceItem { EstimatedDurationMinutes = 60, StandardDurationMinutes = 60, ApproximatePurchaseIntervalDays = 180 };
     var editMode = Model.IsEdit;
+    var selectedCategoryName = selected.ServiceCategory?.Name ?? selected.Category;
+    var selectedPrice = selected.BasePrice > 0 ? selected.BasePrice : selected.Price;
+    var selectedDuration = selected.StandardDurationMinutes > 0 ? selected.StandardDurationMinutes : selected.EstimatedDurationMinutes;
 }
 
 <section class="page-heading">
@@ -62,9 +65,9 @@
                    asp-route-type="@Model.Type">
                     <span>
                         <strong>@service.Name</strong>
-                        <small>@service.Category · @service.Type · @service.EstimatedDurationMinutes мин.</small>
+                        <small>@(service.ServiceCategory?.Name ?? service.Category) · @service.Type · @(service.StandardDurationMinutes > 0 ? service.StandardDurationMinutes : service.EstimatedDurationMinutes) мин.</small>
                     </span>
-                    <strong>@service.Price.Money()</strong>
+                    <strong>@(service.BasePrice > 0 ? service.BasePrice : service.Price).Money()</strong>
                 </a>
             }
         </div>
@@ -91,10 +94,20 @@
                 }
                 <fieldset disabled="@(!editMode)">
                     <label class="wide"><span>Наименование</span><input name="name" value="@selected.Name" required /></label>
-                    <label><span>Вид</span><input name="category" value="@selected.Category" required /></label>
+                    <label>
+                        <span>Категория</span>
+                        <input name="categoryName" list="service-categories" value="@selectedCategoryName" required />
+                        <datalist id="service-categories">
+                            @foreach (var category in Model.ServiceCategories)
+                            {
+                                <option value="@category.Name"></option>
+                            }
+                        </datalist>
+                    </label>
                     <label><span>Тип</span><input name="type" value="@selected.Type" required /></label>
-                    <label><span>Примерная длительность, мин.</span><input name="duration" type="number" min="1" value="@selected.EstimatedDurationMinutes" required /></label>
-                    <label><span>Стоимость</span><input name="price" type="number" min="0" step="0.01" value="@selected.Price" required /></label>
+                    <label class="wide"><span>Описание</span><textarea name="description" rows="3">@selected.Description</textarea></label>
+                    <label><span>Нормативная длительность, мин.</span><input name="duration" type="number" min="1" value="@selectedDuration" required /></label>
+                    <label><span>Базовая стоимость</span><input name="price" type="number" min="0" step="0.01" value="@selectedPrice" required /></label>
                     <label><span>Частота покупки, дней</span><input name="intervalDays" type="number" min="1" value="@selected.ApproximatePurchaseIntervalDays" required /></label>
                 </fieldset>
                 @if (editMode)

@@ -1,0 +1,155 @@
+@model ClientOrdersSectionViewModel
+@{
+    ViewData["Title"] = "Заказ-наряды | Клиент";
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Заказ-наряды</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+<section class="admin-section @((Model.ShowHistory || Model.ShowNestedCard) ? "with-two-cards" : Model.SelectedOrder is null ? "list-only" : "with-card")">
+    <div class="panel">
+        <div class="panel-title"><div><h2>Список заказ-нарядов</h2><span>Поиск по номеру, марке, модели и госномеру</span></div></div>
+        <form method="get" class="filter-bar">
+            <input name="q" value="@Model.Query" placeholder="Номер, марка, модель, госномер" />
+            <select name="status">
+                <option value="">Все статусы</option>
+                @foreach (var item in Enum.GetValues<WorkOrderStatus>())
+                {
+                    <option value="@item" selected="@(Model.Status == item)">@item.Label()</option>
+                }
+            </select>
+            <input name="from" type="date" value="@Model.From?.ToString("yyyy-MM-dd")" />
+            <button class="button" type="submit">Применить</button>
+        </form>
+        <div class="section-list">
+            @foreach (var order in Model.Orders)
+            {
+                <a class="section-list-row @(Model.SelectedOrder?.Id == order.Id ? "active" : "")" asp-action="Orders" asp-route-id="@order.Id" asp-route-q="@Model.Query" asp-route-status="@Model.Status">
+                    <span>
+                        <strong>@order.OrderNumber</strong>
+                        <small>@order.PlannedStartAt.ToString("dd.MM.yyyy HH:mm") · @string.Join(", ", order.VehiclesInOrder.Select(link => link.Vehicle?.PlateNumber))</small>
+                    </span>
+                    <span class="@order.Status.BadgeClass()">@order.Status.Label()</span>
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model.SelectedOrder is not null)
+    {
+        <aside class="panel object-card">
+            <div class="panel-title"><div><h2>@Model.SelectedOrder.OrderNumber</h2><span>Карточка заказ-наряда</span></div><a class="button button-small" asp-action="Orders" asp-route-id="@Model.SelectedOrder.Id" asp-route-history="true">Открыть историю</a></div>
+            <div class="info-grid">
+                <div><span>Статус</span><strong class="@Model.SelectedOrder.Status.BadgeClass()">@Model.SelectedOrder.Status.Label()</strong></div>
+                <div><span>Стоимость</span><strong>@Model.SelectedOrder.TotalCost.Money()</strong></div>
+                <div><span>Мастер-приемщик</span><strong>@Model.SelectedOrder.ReceiverEmployee?.FullName</strong></div>
+                <div><span>Руководитель сервиса</span><strong>@Model.SelectedOrder.ServiceManagerEmployee?.FullName</strong></div>
+                <div><span>Плановое начало</span><strong>@Model.SelectedOrder.PlannedStartAt.ToString("dd.MM.yyyy HH:mm")</strong></div>
+                <div><span>Плановое окончание</span><strong>@(Model.SelectedOrder.PlannedEndAt?.ToString("dd.MM.yyyy HH:mm") ?? "Не указано")</strong></div>
+            </div>
+
+            <div class="subsection vehicles-subsection">
+                <div class="section-subtitle"><h3>Транспортные средства</h3></div>
+                @foreach (var link in Model.SelectedOrder.VehiclesInOrder)
+                {
+                    <a class="section-list-row" asp-action="Orders" asp-route-id="@Model.SelectedOrder.Id" asp-route-vehicleId="@link.VehicleId">
+                        <span><strong>@link.Vehicle?.Make @link.Vehicle?.Model</strong><small>@link.Vehicle?.PlateNumber · VIN @link.Vehicle?.Vin</small></span>
+                    </a>
+                }
+            </div>
+
+            <div class="subsection vehicles-subsection">
+                <div class="section-subtitle"><h3>Работы</h3></div>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>ТС</th><th>Услуга</th><th>Описание</th><th>Исполнитель</th><th>Количество</th><th>Цена</th><th>Скидка</th><th>Сумма</th><th>Статус</th></tr></thead>
+                        <tbody>
+                        @foreach (var work in Model.SelectedOrder.WorkItems)
+                        {
+                            <tr>
+                                <td>@work.Vehicle?.PlateNumber</td>
+                                <td>@work.ServiceItem?.Name</td>
+                                <td>@work.Description</td>
+                                <td>@work.ExecutorEmployee?.FullName</td>
+                                <td>@work.Quantity</td>
+                                <td>@work.UnitPrice.Money()</td>
+                                <td>@work.Discount %</td>
+                                <td>@work.TotalAmount.Money()</td>
+                                <td>@work.Status.Label()</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @if (Model.SelectedOrder.DiagnosticConclusions.Count > 0)
+            {
+                <div class="subsection vehicles-subsection">
+                    <div class="section-subtitle"><h3>Связанные диагностические заключения</h3></div>
+                    @foreach (var diagnostic in Model.SelectedOrder.DiagnosticConclusions)
+                    {
+                        <a class="section-list-row" asp-action="Orders" asp-route-id="@Model.SelectedOrder.Id" asp-route-diagnosticId="@diagnostic.Id">
+                            <span><strong>@diagnostic.Vehicle?.PlateNumber</strong><small>@diagnostic.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small></span>
+                            <span class="@diagnostic.Status.BadgeClass()">@diagnostic.Status.Label()</span>
+                        </a>
+                    }
+                </div>
+            }
+
+            <div class="actions-row top-gap">
+                <form asp-action="ApproveOrder" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="orderId" value="@Model.SelectedOrder.Id" />
+                    <button class="button button-primary" type="submit">Одобрить</button>
+                </form>
+                <details class="inline-details">
+                    <summary class="button">Запросить изменения</summary>
+                    <form asp-action="RequestChanges" method="post" class="form-grid compact top-gap">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="orderId" value="@Model.SelectedOrder.Id" />
+                        <label class="wide"><span>Что нужно изменить</span><textarea name="requiredChanges" rows="3" required></textarea></label>
+                        <button class="button button-danger" type="submit">Отправить запрос</button>
+                    </form>
+                </details>
+            </div>
+        </aside>
+    }
+    else
+    {
+        <aside class="panel empty-state-panel"><div class="empty-state"><p>Выберите заказ-наряд из списка.</p></div></aside>
+    }
+
+    @if (Model.ShowHistory || Model.ShowNestedCard)
+    {
+        <aside class="panel object-card vehicle-card">
+            @if (Model.ShowHistory)
+            {
+                <div class="panel-title"><div><h2>История заказ-наряда</h2><span>@Model.SelectedOrder?.OrderNumber</span></div><a class="button button-small" asp-action="Orders" asp-route-id="@Model.SelectedOrder!.Id">Закрыть</a></div>
+                <partial name="_WorkOrderHistory" model="Model.History" />
+            }
+            else if (Model.SelectedVehicle is not null)
+            {
+                <div class="panel-title"><div><h2>@Model.SelectedVehicle.Make @Model.SelectedVehicle.Model</h2><span>Транспортное средство</span></div><a class="button button-small" asp-action="Orders" asp-route-id="@Model.SelectedOrder!.Id">Закрыть</a></div>
+                <div class="info-grid">
+                    <div><span>Госномер</span><strong>@Model.SelectedVehicle.PlateNumber</strong></div>
+                    <div><span>VIN</span><strong>@Model.SelectedVehicle.Vin</strong></div>
+                </div>
+            }
+            else if (Model.SelectedDiagnostic is not null)
+            {
+                <div class="panel-title"><div><h2>Диагностическое заключение</h2><span>@Model.SelectedDiagnostic.Vehicle?.PlateNumber</span></div><a class="button button-small" asp-action="Orders" asp-route-id="@Model.SelectedOrder!.Id">Закрыть</a></div>
+                <div class="info-grid">
+                    <div><span>Статус</span><strong class="@Model.SelectedDiagnostic.Status.BadgeClass()">@Model.SelectedDiagnostic.Status.Label()</strong></div>
+                    <div class="span-2"><span>Результат</span><strong>@Model.SelectedDiagnostic.DiagnosticResult</strong></div>
+                    <div class="span-2"><span>Рекомендации</span><strong>@Model.SelectedDiagnostic.Recommendations</strong></div>
+                </div>
+            }
+        </aside>
+    }
+</section>

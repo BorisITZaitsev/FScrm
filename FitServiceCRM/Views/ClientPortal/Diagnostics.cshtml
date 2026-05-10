@@ -1,0 +1,68 @@
+@model ClientDiagnosticsSectionViewModel
+@{
+    ViewData["Title"] = "Диагностика | Клиент";
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Диагностика</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+<section class="admin-section @(Model.SelectedDiagnostic is null ? "list-only" : "with-card")">
+    <div class="panel">
+        <div class="panel-title"><div><h2>Список диагностических заключений</h2><span>Только сформированные и просмотренные заключения</span></div></div>
+        <form method="get" class="filter-bar">
+            <input name="q" value="@Model.Query" placeholder="Марка, модель, госномер" />
+            <select name="status">
+                <option value="">Все статусы</option>
+                <option value="@DiagnosticConclusionStatus.Formed" selected="@(Model.Status == DiagnosticConclusionStatus.Formed)">@DiagnosticConclusionStatus.Formed.Label()</option>
+                <option value="@DiagnosticConclusionStatus.CustomerAcknowledged" selected="@(Model.Status == DiagnosticConclusionStatus.CustomerAcknowledged)">@DiagnosticConclusionStatus.CustomerAcknowledged.Label()</option>
+            </select>
+            <input name="from" type="date" value="@Model.From?.ToString("yyyy-MM-dd")" />
+            <button class="button" type="submit">Применить</button>
+        </form>
+        <div class="section-list">
+            @foreach (var diagnostic in Model.Diagnostics)
+            {
+                <a class="section-list-row @(Model.SelectedDiagnostic?.Id == diagnostic.Id ? "active" : "")" asp-action="Diagnostics" asp-route-id="@diagnostic.Id" asp-route-q="@Model.Query" asp-route-status="@Model.Status">
+                    <span>
+                        <strong>@diagnostic.Vehicle?.Make @diagnostic.Vehicle?.Model</strong>
+                        <small>@diagnostic.Vehicle?.PlateNumber · @diagnostic.CreatedAt.ToString("dd.MM.yyyy HH:mm")</small>
+                    </span>
+                    <span class="@diagnostic.Status.BadgeClass()">@diagnostic.Status.Label()</span>
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model.SelectedDiagnostic is not null)
+    {
+        <aside class="panel object-card">
+            <div class="panel-title"><div><h2>@Model.SelectedDiagnostic.Vehicle?.PlateNumber</h2><span>Карточка диагностического заключения</span></div></div>
+            <div class="info-grid">
+                <div><span>Транспортное средство</span><strong>@Model.SelectedDiagnostic.Vehicle?.Make @Model.SelectedDiagnostic.Vehicle?.Model</strong></div>
+                <div><span>Мастер-приемщик</span><strong>@Model.SelectedDiagnostic.ReceiverEmployee?.FullName</strong></div>
+                <div><span>Дата формирования</span><strong>@Model.SelectedDiagnostic.CreatedAt.ToString("dd.MM.yyyy HH:mm")</strong></div>
+                <div><span>Статус</span><strong class="@Model.SelectedDiagnostic.Status.BadgeClass()">@Model.SelectedDiagnostic.Status.Label()</strong></div>
+                <div class="span-2"><span>Результат диагностики</span><strong>@Model.SelectedDiagnostic.DiagnosticResult</strong></div>
+                <div class="span-2"><span>Рекомендации</span><strong>@Model.SelectedDiagnostic.Recommendations</strong></div>
+            </div>
+            <div class="actions-row top-gap">
+                <form asp-action="MarkDiagnosticAcknowledged" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="diagnosticId" value="@Model.SelectedDiagnostic.Id" />
+                    <button class="button button-primary" type="submit" disabled="@(Model.SelectedDiagnostic.Status == DiagnosticConclusionStatus.CustomerAcknowledged)">
+                        @(Model.SelectedDiagnostic.Status == DiagnosticConclusionStatus.CustomerAcknowledged ? "Просмотрено" : "Ознакомлен")
+                    </button>
+                </form>
+            </div>
+        </aside>
+    }
+    else
+    {
+        <aside class="panel empty-state-panel"><div class="empty-state"><p>Выберите диагностическое заключение из списка.</p></div></aside>
+    }
+</section>

@@ -31,17 +31,31 @@
                     <a asp-controller="Admin" asp-action="Customers">Клиенты</a>
                     <a asp-controller="Admin" asp-action="Orders">Заказ-наряды</a>
                 }
-                @if (role == nameof(UserRole.Master))
-                {
-                    <a asp-controller="Master" asp-action="Index">Приемка</a>
-                }
                 @if (role == nameof(UserRole.Manager))
                 {
-                    <a asp-controller="Manager" asp-action="Index">Руководитель</a>
+                    <a asp-controller="Manager" asp-action="Index">Общий вид</a>
+                    <a asp-controller="Manager" asp-action="Orders">Заказ-наряды</a>
+                    <a asp-controller="Manager" asp-action="Customers">Клиенты</a>
+                    <a asp-controller="Manager" asp-action="Employees">Сотрудники</a>
+                    <a asp-controller="Manager" asp-action="Services">Услуги</a>
+                }
+                @if (role == nameof(UserRole.Master))
+                {
+                    <a asp-controller="Master" asp-action="Index">Общий вид</a>
+                    <a asp-controller="Master" asp-action="Orders">Заказ-наряды</a>
+                    <a asp-controller="Master" asp-action="Diagnostics">Диагностика</a>
+                    <a asp-controller="Master" asp-action="Customers">Клиенты</a>
+                    <a asp-controller="Master" asp-action="Employees">Сотрудники</a>
+                    <a asp-controller="Master" asp-action="Services">Услуги</a>
                 }
                 @if (role == nameof(UserRole.Client))
                 {
-                    <a asp-controller="ClientPortal" asp-action="Index">Кабинет клиента</a>
+                    <a asp-controller="ClientPortal" asp-action="Index">Общий вид</a>
+                    <a asp-controller="ClientPortal" asp-action="Appointments">Запись на услугу</a>
+                    <a asp-controller="ClientPortal" asp-action="Profile">Профиль</a>
+                    <a asp-controller="ClientPortal" asp-action="Vehicles">Транспортные средства</a>
+                    <a asp-controller="ClientPortal" asp-action="Orders">Заказ-наряды</a>
+                    <a asp-controller="ClientPortal" asp-action="Diagnostics">Диагностика</a>
                 }
             </nav>
             <form class="logout" asp-controller="Auth" asp-action="Logout" method="post">
@@ -50,7 +64,7 @@
                     <strong>@displayName</strong>
                     <span>@(Enum.Parse<UserRole>(role ?? nameof(UserRole.Client)).Label())</span>
                 </div>
-                <button type="submit" class="button button-ghost">Выйти</button>
+                <button type="submit" class="button button-ghost">Выход</button>
             </form>
         </aside>
         <main class="content">

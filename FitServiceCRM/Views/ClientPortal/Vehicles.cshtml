@@ -1,0 +1,126 @@
+@using FitServiceCRM.Services
+@model ClientVehiclesSectionViewModel
+@{
+    ViewData["Title"] = "Транспортные средства | Клиент";
+    var selected = Model.SelectedVehicle ?? new Vehicle();
+    var hasActiveOrders = Model.SelectedVehicle is not null && WorkOrderSupport.HasActiveVehicleOrders(Model.SelectedVehicle);
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Транспортные средства</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+<section class="admin-section @((Model.ShowHistory || Model.ShowNestedCard) ? "with-two-cards" : Model.ShowCard ? "with-card" : "list-only")">
+    <div class="panel">
+        <div class="panel-title">
+            <div><h2>Список транспортных средств</h2><span>Поиск по марке, модели, госномеру и VIN</span></div>
+            <a class="button button-primary button-small" asp-action="Vehicles" asp-route-create="true" asp-route-edit="true">Добавить транспортное средство</a>
+        </div>
+        <form method="get" class="filter-bar">
+            <input name="q" value="@Model.Query" placeholder="Марка, модель, госномер, VIN" />
+            <button class="button" type="submit">Применить</button>
+        </form>
+        <div class="section-list">
+            @foreach (var vehicle in Model.Vehicles)
+            {
+                <a class="section-list-row @(Model.SelectedVehicle?.Id == vehicle.Id ? "active" : "")" asp-action="Vehicles" asp-route-id="@vehicle.Id" asp-route-q="@Model.Query">
+                    <span>
+                        <strong>@vehicle.Make @vehicle.Model</strong>
+                        <small>@vehicle.PlateNumber · VIN @vehicle.Vin</small>
+                    </span>
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model.ShowCard)
+    {
+        <aside class="panel object-card">
+            <div class="panel-title">
+                <div><h2>@(Model.IsCreate ? "Новое транспортное средство" : $"{selected.Make} {selected.Model}")</h2><span>Карточка ТС</span></div>
+                <div class="actions-row">
+                    @if (!Model.IsCreate && !Model.IsEdit && !hasActiveOrders)
+                    {
+                        <a class="button button-small" asp-action="Vehicles" asp-route-id="@selected.Id" asp-route-edit="true">Редактировать</a>
+                    }
+                    @if (!Model.IsCreate)
+                    {
+                        <a class="button button-small" asp-action="Vehicles" asp-route-id="@selected.Id" asp-route-history="true">История обслуживания</a>
+                    }
+                </div>
+            </div>
+            @if (hasActiveOrders && !Model.IsCreate)
+            {
+                <div class="notice">Редактирование недоступно, так как по транспортному средству есть активный заказ-наряд.</div>
+            }
+            <form asp-action="SaveVehicle" method="post" class="form-grid compact">
+                @Html.AntiForgeryToken()
+                @if (!Model.IsCreate)
+                {
+                    <input type="hidden" name="id" value="@selected.Id" />
+                }
+                <fieldset disabled="@(!Model.IsEdit || hasActiveOrders && !Model.IsCreate)">
+                    <label><span>VIN</span><input name="vin" value="@selected.Vin" required /></label>
+                    <label><span>Марка</span><input name="make" value="@selected.Make" required /></label>
+                    <label><span>Модель</span><input name="model" value="@selected.Model" required /></label>
+                    <label><span>Госномер</span><input name="plateNumber" value="@selected.PlateNumber" required /></label>
+                    <label><span>Год выпуска</span><input name="year" type="number" min="1980" value="@(selected.Year == 0 ? DateTime.Now.Year : selected.Year)" required /></label>
+                    <label><span>Пробег</span><input name="mileage" type="number" min="0" value="@selected.Mileage" required /></label>
+                    <label class="wide"><span>Цвет</span><input name="color" value="@selected.Color" /></label>
+                </fieldset>
+                @if (Model.IsEdit && (!hasActiveOrders || Model.IsCreate))
+                {
+                    <button class="button button-primary" type="submit">Сохранить</button>
+                }
+            </form>
+        </aside>
+    }
+    else
+    {
+        <aside class="panel empty-state-panel"><div class="empty-state"><p>Выберите транспортное средство из списка.</p></div></aside>
+    }
+
+    @if (Model.ShowHistory || Model.ShowNestedCard)
+    {
+        <aside class="panel object-card vehicle-card">
+            @if (Model.ShowHistory && Model.SelectedVehicle is not null)
+            {
+                <div class="panel-title"><div><h2>История обслуживания</h2><span>@Model.SelectedVehicle.PlateNumber</span></div><a class="button button-small" asp-action="Vehicles" asp-route-id="@Model.SelectedVehicle.Id">Закрыть</a></div>
+                <div class="stack-list">
+                    @foreach (var order in Model.VehicleOrders)
+                    {
+                        <a class="section-list-row" asp-action="Orders" asp-route-id="@order.Id">
+                            <span><strong>@order.OrderNumber</strong><small>@order.PlannedStartAt.ToString("dd.MM.yyyy HH:mm") · @order.Status.Label()</small></span>
+                        </a>
+                    }
+                    @foreach (var diagnostic in Model.VehicleDiagnostics)
+                    {
+                        <a class="section-list-row" asp-action="Diagnostics" asp-route-id="@diagnostic.Id">
+                            <span><strong>Диагностика</strong><small>@diagnostic.CreatedAt.ToString("dd.MM.yyyy HH:mm") · @diagnostic.Status.Label()</small></span>
+                        </a>
+                    }
+                </div>
+            }
+            else if (Model.SelectedOrder is not null)
+            {
+                <div class="panel-title"><div><h2>@Model.SelectedOrder.OrderNumber</h2><span>Заказ-наряд</span></div><a class="button button-small" asp-action="Vehicles" asp-route-id="@Model.SelectedVehicle!.Id" asp-route-history="true">Назад</a></div>
+                <div class="info-grid">
+                    <div><span>Статус</span><strong class="@Model.SelectedOrder.Status.BadgeClass()">@Model.SelectedOrder.Status.Label()</strong></div>
+                    <div><span>Стоимость</span><strong>@Model.SelectedOrder.TotalCost.Money()</strong></div>
+                </div>
+            }
+            else if (Model.SelectedDiagnostic is not null)
+            {
+                <div class="panel-title"><div><h2>Диагностическое заключение</h2><span>@Model.SelectedDiagnostic.CreatedAt.ToString("dd.MM.yyyy HH:mm")</span></div><a class="button button-small" asp-action="Vehicles" asp-route-id="@Model.SelectedVehicle!.Id" asp-route-history="true">Назад</a></div>
+                <div class="info-grid">
+                    <div><span>Статус</span><strong class="@Model.SelectedDiagnostic.Status.BadgeClass()">@Model.SelectedDiagnostic.Status.Label()</strong></div>
+                    <div class="span-2"><span>Результат</span><strong>@Model.SelectedDiagnostic.DiagnosticResult</strong></div>
+                </div>
+            }
+        </aside>
+    }
+</section>

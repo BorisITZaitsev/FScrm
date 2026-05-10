@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "wYjR6DGbZQo=",
+  "dgSpecHash": "QVoHSEDD4k4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\borya\\Programming\\Codex projects\\2026_Дипломная работа_БараникасМИ\\FitServiceCRM\\FitServiceCRM\\FitServiceCRM.csproj",
+  "projectFilePath": "C:\\Users\\borya\\Programming\\Codex projects\\2026_Дипломная работа_БараникасМИ\\FitServiceCRM\\Fitservicecrm\\Fitservicecrm.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\borya\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\borya\\.nuget\\packages\\microsoft.build\\17.7.2\\microsoft.build.17.7.2.nupkg.sha512",

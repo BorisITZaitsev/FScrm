@@ -1,122 +1,133 @@
 @model ManagerDashboardViewModel
 @{
-    ViewData["Title"] = "Руководитель сервиса | Fit Service CRM";
-    var points = Model.Analytics.Points;
-    var maxRevenue = points.Count == 0 ? 1 : Math.Max(1, points.Max(point => point.Revenue));
+    ViewData["Title"] = "Общий вид руководителя сервиса | Fit Service CRM";
 }
 
 <section class="page-heading">
     <div>
-        <p class="eyebrow">Руководитель сервиса</p>
-        <h1>Операционная аналитика и прогнозирование</h1>
+        <p class="eyebrow">Разделы руководителя сервиса</p>
+        <h1>Общий вид</h1>
     </div>
     <div class="quick-stats">
-        <div><strong>@Model.Analytics.OrdersCount</strong><span>заказов</span></div>
-        <div><strong>@Model.Analytics.TotalRevenue.Money()</strong><span>выручка</span></div>
-        <div><strong>@Model.Analytics.AverageCheck.Money()</strong><span>средний чек</span></div>
+        <div><strong>@Model.RecentOrders.Count</strong><span>последних заказ-нарядов</span></div>
+        <div><strong>@Model.Customers.Count</strong><span>клиентов</span></div>
+        <div><strong>@Model.Services.Count</strong><span>услуг</span></div>
+        <div><strong>@Model.Employees.Count</strong><span>сотрудников</span></div>
     </div>
 </section>
 
-<section class="panel">
-    <div class="panel-title">
-        <h2>Фильтр выборки</h2>
-        <span>Услуга, сотрудник и период</span>
-    </div>
-    <form method="get" class="form-grid">
-        <label>
-            <span>Услуга</span>
-            <select name="serviceId">
-                <option value="">Все услуги</option>
-                @foreach (var service in Model.Services)
-                {
-                    <option value="@service.Id" selected="@(Model.ServiceId == service.Id)">@service.Name</option>
-                }
-            </select>
-        </label>
-        <label>
-            <span>Сотрудник</span>
-            <select name="employeeId">
-                <option value="">Все сотрудники</option>
-                @foreach (var employee in Model.Employees)
-                {
-                    <option value="@employee.Id" selected="@(Model.EmployeeId == employee.Id)">@employee.FullName</option>
-                }
-            </select>
-        </label>
-        <label><span>С</span><input name="from" type="date" value="@Model.From?.ToString("yyyy-MM-dd")" /></label>
-        <label><span>По</span><input name="to" type="date" value="@Model.To?.ToString("yyyy-MM-dd")" /></label>
-        <button class="button button-primary" type="submit">Построить</button>
-    </form>
-</section>
-
-<section class="layout-grid two">
-    <div class="panel">
+<section class="overview-grid">
+    <article class="panel">
         <div class="panel-title">
-            <h2>Выручка и тренд</h2>
-            <span>Линейная аппроксимация МНК</span>
+            <div>
+                <h2>Заказ-наряды</h2>
+                <span>Последние изменения</span>
+            </div>
+            <a class="button button-small" asp-action="Orders">Смотреть всё</a>
         </div>
-        <div class="chart">
-            @if (points.Count == 0)
+        <div class="stack-list">
+            @if (Model.RecentOrders.Count == 0)
             {
-                <p class="empty">Нет данных для графика.</p>
+                <p class="empty-inline">Пока нет заказ-нарядов, доступных для обзора.</p>
             }
-            else
-            {
-                @foreach (var point in points)
-                {
-                    var height = Math.Max(8, (int)(point.Revenue / maxRevenue * 100));
-                    var trendHeight = Math.Max(4, (int)(point.TrendRevenue / maxRevenue * 100));
-                    <div class="bar-column">
-                        <div class="bar-stack">
-                            <span class="trend-marker" style="bottom:@trendHeight%"></span>
-                            <span class="bar" style="height:@height%"></span>
-                        </div>
-                        <small>@point.Label</small>
-                    </div>
-                }
-            }
-        </div>
-    </div>
-
-    <div class="panel">
-        <div class="panel-title">
-            <h2>Статистический вывод</h2>
-            <span>МНК, метод моментов, ММП</span>
-        </div>
-        <div class="metric-list">
-            <div><span>Наклон МНК</span><strong>@Model.Analytics.LeastSquaresSlope.ToString("N2")</strong></div>
-            <div><span>Средний спрос</span><strong>@Model.Analytics.MomentsMeanDemand.ToString("N1")</strong></div>
-            <div><span>Дисперсия спроса</span><strong>@Model.Analytics.MomentsVarianceDemand.ToString("N1")</strong></div>
-            <div><span>λ ММП</span><strong>@Model.Analytics.MaximumLikelihoodLambda.ToString("N1")</strong></div>
-            <div><span>Прогноз заказов</span><strong>@Model.Analytics.ForecastOrders.ToString("N1")</strong></div>
-            <div><span>Прогноз выручки</span><strong>@Model.Analytics.ForecastRevenue.Money()</strong></div>
-        </div>
-        <p class="analytics-text">@Model.Analytics.Interpretation</p>
-    </div>
-</section>
-
-<section class="panel">
-    <div class="panel-title">
-        <h2>Последние заказ-наряды</h2>
-        <span>Контроль работ сервиса</span>
-    </div>
-    <div class="table-wrap">
-        <table>
-            <thead><tr><th>Заказ</th><th>Клиент</th><th>ТС</th><th>Услуги</th><th>Приемщик</th><th>Статус</th><th>Итого</th></tr></thead>
-            <tbody>
             @foreach (var order in Model.RecentOrders)
             {
-                <tr>
-                    <td>#@order.Id<br /><span>@order.PlannedStartAt.ToString("dd.MM.yyyy")</span></td>
-                    <td>@order.Customer?.Name</td>
-                    <td>@order.Vehicle?.PlateNumber</td>
-                    <td>@string.Join(", ", order.OrderServices.Select(item => item.ServiceItem?.Name))</td>
-                    <td>@order.ReceiverEmployee?.FullName</td>
-                    <td><span class="@order.Status.BadgeClass()">@order.Status.Label()</span></td>
-                    <td>@order.TotalCost.Money()</td>
-                </tr>
+                var updated = order.StatusHistory.OrderByDescending(item => item.ChangedAt).FirstOrDefault();
+                <article class="list-row">
+                    <a class="stretch-link" asp-action="Orders" asp-route-id="@order.Id"></a>
+                    <div>
+                        <strong>@order.OrderNumber</strong>
+                        <span>@order.PlannedStartAt.ToString("dd.MM.yyyy") · @order.Customer?.Name</span>
+                        <span class="@order.Status.BadgeClass()">@order.Status.Label()</span>
+                    </div>
+                    <div class="actions-row">
+                        @if (updated is not null && updated.ChangedAt >= DateTime.Now.AddDays(-3))
+                        {
+                            <span class="mini-badge">Обновлено</span>
+                        }
+                        <a class="button button-small" asp-action="Orders" asp-route-id="@order.Id" asp-route-history="true">История</a>
+                    </div>
+                </article>
             }
-            </tbody>
-        </table>
-    </div>
+        </div>
+    </article>
+
+    <article class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Клиенты</h2>
+                <span>Карточки клиентов</span>
+            </div>
+            <a class="button button-small" asp-action="Customers">Смотреть всё</a>
+        </div>
+        <div class="stack-list">
+            @if (Model.Customers.Count == 0)
+            {
+                <p class="empty-inline">Клиенты пока не найдены.</p>
+            }
+            @foreach (var customer in Model.Customers)
+            {
+                <article class="list-row">
+                    <a class="stretch-link" asp-action="Customers" asp-route-id="@customer.Id"></a>
+                    <div>
+                        <strong>@customer.Name</strong>
+                        <span>@customer.Type.Label() · @customer.Phone</span>
+                    </div>
+                    <a class="button button-small" asp-action="Customers" asp-route-id="@customer.Id">Карточка</a>
+                </article>
+            }
+        </div>
+    </article>
+
+    <article class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Услуги</h2>
+                <span>Каталог работ</span>
+            </div>
+            <a class="button button-small" asp-action="Services">Смотреть всё</a>
+        </div>
+        <div class="stack-list">
+            @if (Model.Services.Count == 0)
+            {
+                <p class="empty-inline">Услуги пока не добавлены.</p>
+            }
+            @foreach (var service in Model.Services)
+            {
+                <article class="list-row">
+                    <a class="stretch-link" asp-action="Services" asp-route-id="@service.Id"></a>
+                    <div>
+                        <strong>@service.Name</strong>
+                        <span>@service.Category · @service.BasePrice.Money()</span>
+                    </div>
+                </article>
+            }
+        </div>
+    </article>
+
+    <article class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Сотрудники</h2>
+                <span>Контакты сервиса</span>
+            </div>
+            <a class="button button-small" asp-action="Employees">Смотреть всё</a>
+        </div>
+        <div class="stack-list">
+            @if (Model.Employees.Count == 0)
+            {
+                <p class="empty-inline">Сотрудники пока не найдены.</p>
+            }
+            @foreach (var employee in Model.Employees)
+            {
+                <article class="list-row">
+                    <a class="stretch-link" asp-action="Employees" asp-route-id="@employee.Id"></a>
+                    <div>
+                        <strong>@employee.FullName</strong>
+                        <span>@employee.Position · @employee.Phone</span>
+                    </div>
+                </article>
+            }
+        </div>
+    </article>
 </section>

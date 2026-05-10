@@ -1,0 +1,81 @@
+@model ClientAppointmentsSectionViewModel
+@{
+    ViewData["Title"] = "Запись на услугу | Клиент";
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Запись на услугу</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+<section class="admin-section with-card">
+    <div class="panel">
+        <div class="panel-title">
+            <div><h2>Последние записи</h2><span>Ваши заявки на визит</span></div>
+        </div>
+        <div class="section-list">
+            @foreach (var appointment in Model.Appointments)
+            {
+                <article class="section-list-row">
+                    <span>
+                        <strong>@appointment.PlannedVisitAt.ToString("dd.MM.yyyy HH:mm")</strong>
+                        <small>@appointment.ServiceCenter?.Name · @string.Join(", ", appointment.Vehicles.Select(link => link.Vehicle?.PlateNumber))</small>
+                    </span>
+                    <span class="badge badge-neutral">@appointment.Status.Label()</span>
+                </article>
+            }
+        </div>
+    </div>
+
+    <aside class="panel object-card">
+        <div class="panel-title">
+            <div><h2>Новая запись</h2><span>Диагностика или услуга</span></div>
+        </div>
+        @if (Model.Vehicles.Count == 0)
+        {
+            <div class="empty-state">
+                <p>Для записи сначала нужно добавить транспортное средство.</p>
+                <a class="button button-primary" asp-action="Vehicles" asp-route-create="true" asp-route-edit="true">Перейти к транспортным средствам</a>
+            </div>
+        }
+        else
+        {
+            <form asp-action="CreateAppointment" method="post" class="form-grid compact">
+                @Html.AntiForgeryToken()
+                <label class="wide">
+                    <span>Транспортные средства</span>
+                    <select name="selectedVehicleIds" multiple size="@(Math.Max(3, Model.Vehicles.Count))">
+                        @foreach (var vehicle in Model.Vehicles)
+                        {
+                            <option value="@vehicle.Id">@vehicle.PlateNumber · @vehicle.Make @vehicle.Model</option>
+                        }
+                    </select>
+                </label>
+                <label class="wide">
+                    <span>Услуги</span>
+                    <select name="selectedServiceIds" multiple size="@(Math.Max(4, Model.Services.Count))">
+                        @foreach (var service in Model.Services)
+                        {
+                            <option value="@service.Id">@service.Name · @service.BasePrice.Money()</option>
+                        }
+                    </select>
+                </label>
+                <label>
+                    <span>Сервисный центр</span>
+                    <select name="serviceCenterId">
+                        @foreach (var center in Model.ServiceCenters)
+                        {
+                            <option value="@center.Id">@center.Name</option>
+                        }
+                    </select>
+                </label>
+                <label><span>Желаемая дата и время</span><input name="plannedVisitAt" type="datetime-local" value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-ddTHH:mm")" required /></label>
+                <label class="wide"><span>Комментарий</span><textarea name="comment" rows="4"></textarea></label>
+                <button class="button button-primary" type="submit">Отправить заявку</button>
+            </form>
+        }
+    </aside>
+</section>

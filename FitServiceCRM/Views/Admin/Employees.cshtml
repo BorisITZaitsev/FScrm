@@ -52,7 +52,7 @@
                    asp-route-position="@Model.Position">
                     <span>
                         <strong>@employee.FullName</strong>
-                        <small>@employee.Position · @employee.Phone</small>
+                        <small>@employee.Position · @employee.Phone · @(employee.User?.Login ?? "без учетной записи")</small>
                     </span>
                 </a>
             }
@@ -79,6 +79,16 @@
                     <input type="hidden" name="id" value="@selected.Id" />
                 }
                 <fieldset disabled="@(!editMode)">
+                    <label>
+                        <span>Учетная запись</span>
+                        <select name="userId">
+                            <option value="">Не связана</option>
+                            @foreach (var user in Model.Users)
+                            {
+                                <option value="@user.Id" selected="@(selected.UserId == user.Id)">@user.Login</option>
+                            }
+                        </select>
+                    </label>
                     <label><span>ФИО</span><input name="fullName" value="@selected.FullName" required /></label>
                     <label><span>Телефон</span><input name="phone" value="@selected.Phone" required /></label>
                     <label><span>Email</span><input name="email" type="email" value="@selected.Email" required /></label>

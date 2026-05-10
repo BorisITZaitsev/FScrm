@@ -1,0 +1,136 @@
+@model ManagerCustomersSectionViewModel
+@{
+    ViewData["Title"] = "Клиенты | Руководитель сервиса";
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Клиенты</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+<section class="admin-section @(Model.ShowNestedCard ? "with-two-cards" : Model.SelectedCustomer is null ? "list-only" : "with-card")">
+    <div class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Список клиентов</h2>
+                <span>Поиск по ФИО, организации, представителю и транспортным средствам</span>
+            </div>
+        </div>
+        <form method="get" class="filter-bar">
+            <input name="q" value="@Model.Query" placeholder="ФИО, организация, представитель, марка, модель, госномер" />
+            <select name="sort">
+                <option value="name" selected="@(Model.Sort == "name")">По названию</option>
+                <option value="type" selected="@(Model.Sort == "type")">По типу</option>
+                <option value="status" selected="@(Model.Sort == "status")">По статусу</option>
+            </select>
+            <button class="button" type="submit">Применить</button>
+        </form>
+        <div class="section-list">
+            @foreach (var customer in Model.Customers)
+            {
+                <a class="section-list-row @(Model.SelectedCustomer?.Id == customer.Id ? "active" : "")" asp-action="Customers" asp-route-id="@customer.Id" asp-route-q="@Model.Query" asp-route-sort="@Model.Sort">
+                    <span>
+                        <strong>@customer.Name</strong>
+                        <small>@customer.Type.Label() · @customer.Vehicles.Count ТС · @customer.Phone</small>
+                    </span>
+                    <span class="badge badge-neutral">@customer.Status.Label()</span>
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model.SelectedCustomer is not null)
+    {
+        <aside class="panel object-card">
+            <div class="panel-title">
+                <div>
+                    <h2>@Model.SelectedCustomer.Name</h2>
+                    <span>Карточка клиента</span>
+                </div>
+            </div>
+            <div class="info-grid">
+                <div><span>Тип</span><strong>@Model.SelectedCustomer.Type.Label()</strong></div>
+                <div><span>Статус</span><strong>@Model.SelectedCustomer.Status.Label()</strong></div>
+                <div><span>Телефон</span><strong>@Model.SelectedCustomer.Phone</strong></div>
+                <div><span>Email</span><strong>@Model.SelectedCustomer.Email</strong></div>
+                <div class="span-2"><span>Комментарий</span><strong>@(string.IsNullOrWhiteSpace(Model.SelectedCustomer.Comment) ? "Не указан" : Model.SelectedCustomer.Comment)</strong></div>
+            </div>
+
+            @if (Model.SelectedCustomer.Representatives.Count > 0)
+            {
+                <div class="subsection vehicles-subsection">
+                    <div class="section-subtitle"><h3>Представители</h3></div>
+                    @foreach (var representative in Model.SelectedCustomer.Representatives)
+                    {
+                        <a class="section-list-row @(Model.SelectedRepresentative?.Id == representative.Id ? "active" : "")"
+                           asp-action="Customers"
+                           asp-route-id="@Model.SelectedCustomer.Id"
+                           asp-route-representativeId="@representative.Id">
+                            <span>
+                                <strong>@representative.FullName</strong>
+                                <small>@representative.Position · @representative.Phone</small>
+                            </span>
+                        </a>
+                    }
+                </div>
+            }
+
+            <div class="subsection vehicles-subsection">
+                <div class="section-subtitle"><h3>Транспортные средства</h3></div>
+                @foreach (var vehicle in Model.SelectedCustomer.Vehicles)
+                {
+                    <a class="section-list-row @(Model.SelectedVehicle?.Id == vehicle.Id ? "active" : "")"
+                       asp-action="Customers"
+                       asp-route-id="@Model.SelectedCustomer.Id"
+                       asp-route-vehicleId="@vehicle.Id">
+                        <span>
+                            <strong>@vehicle.Make @vehicle.Model</strong>
+                            <small>@vehicle.PlateNumber · VIN @vehicle.Vin</small>
+                        </span>
+                    </a>
+                }
+            </div>
+        </aside>
+    }
+
+    @if (Model.SelectedRepresentative is not null || Model.SelectedVehicle is not null)
+    {
+        <aside class="panel object-card vehicle-card">
+            @if (Model.SelectedRepresentative is not null)
+            {
+                <div class="panel-title">
+                    <div>
+                        <h2>@Model.SelectedRepresentative.FullName</h2>
+                        <span>Карточка представителя</span>
+                    </div>
+                    <a class="button button-small" asp-action="Customers" asp-route-id="@Model.SelectedCustomer!.Id">Закрыть</a>
+                </div>
+                <div class="info-grid">
+                    <div><span>Должность</span><strong>@Model.SelectedRepresentative.Position</strong></div>
+                    <div><span>Телефон</span><strong>@Model.SelectedRepresentative.Phone</strong></div>
+                    <div class="span-2"><span>Email</span><strong>@Model.SelectedRepresentative.Email</strong></div>
+                </div>
+            }
+            else if (Model.SelectedVehicle is not null)
+            {
+                <div class="panel-title">
+                    <div>
+                        <h2>@Model.SelectedVehicle.Make @Model.SelectedVehicle.Model</h2>
+                        <span>Карточка транспортного средства</span>
+                    </div>
+                    <a class="button button-small" asp-action="Customers" asp-route-id="@Model.SelectedCustomer!.Id">Закрыть</a>
+                </div>
+                <div class="info-grid">
+                    <div><span>Госномер</span><strong>@Model.SelectedVehicle.PlateNumber</strong></div>
+                    <div><span>VIN</span><strong>@Model.SelectedVehicle.Vin</strong></div>
+                    <div><span>Год</span><strong>@Model.SelectedVehicle.Year</strong></div>
+                    <div><span>Пробег</span><strong>@Model.SelectedVehicle.Mileage км</strong></div>
+                    <div class="span-2"><span>Цвет</span><strong>@Model.SelectedVehicle.Color</strong></div>
+                </div>
+            }
+        </aside>
+    }
+</section>

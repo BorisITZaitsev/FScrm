@@ -4,20 +4,50 @@
     var firstCustomer = Model.Customers.FirstOrDefault();
     var firstVehicle = Model.Vehicles.FirstOrDefault();
     var firstEmployee = Model.Employees.FirstOrDefault();
+    var firstManager = Model.Employees.FirstOrDefault(employee => employee.Position.Contains("Руководитель")) ?? firstEmployee;
     var firstService = Model.Services.FirstOrDefault();
+    var firstCenter = Model.ServiceCenters.FirstOrDefault();
     var selected = Model.SelectedOrder ?? new WorkOrder
     {
         CustomerId = firstCustomer?.Id ?? 0,
         VehicleId = firstVehicle?.Id ?? 0,
+        ServiceCenterId = firstCenter?.Id ?? 0,
         ReceiverEmployeeId = firstEmployee?.Id ?? 0,
+        ServiceManagerEmployeeId = firstManager?.Id,
         PlannedStartAt = DateTime.Now.AddDays(1),
+        PlannedEndAt = DateTime.Now.AddDays(1).AddMinutes(firstService?.EstimatedDurationMinutes ?? 60),
         PlannedDurationMinutes = firstService?.EstimatedDurationMinutes ?? 60,
         TotalCost = firstService?.Price ?? 0,
-        Status = WorkOrderStatus.New
+        Status = WorkOrderStatus.Draft
     };
     var editMode = Model.IsEdit;
-    var selectedServiceId = selected.OrderServices.FirstOrDefault()?.ServiceItemId ?? firstService?.Id ?? 0;
-    var selectedExecutorId = selected.Executors.FirstOrDefault()?.EmployeeId;
+    var workItemMode = Model.ShowWorkItemCard;
+    var selectedServiceId = selected.OrderServices.FirstOrDefault()?.ServiceItemId
+        ?? selected.WorkItems.FirstOrDefault()?.ServiceItemId
+        ?? firstService?.Id
+        ?? 0;
+    var selectedExecutorId = selected.Executors.FirstOrDefault()?.EmployeeId ?? selected.WorkItems.FirstOrDefault()?.ExecutorEmployeeId;
+    var selectedVehicleIds = selected.VehiclesInOrder.Select(link => link.VehicleId).ToHashSet();
+    if (selectedVehicleIds.Count == 0 && selected.VehicleId > 0)
+    {
+        selectedVehicleIds.Add(selected.VehicleId);
+    }
+    var selectedWorkItem = Model.SelectedWorkItem ?? new WorkItem
+    {
+        WorkOrderId = selected.Id,
+        VehicleId = selectedVehicleIds.FirstOrDefault(),
+        ServiceItemId = selectedServiceId,
+        Quantity = 1,
+        UnitPrice = firstService?.BasePrice ?? firstService?.Price ?? 0,
+        Status = WorkItemStatus.Planned
+    };
+    var customerVehicles = selected.CustomerId > 0
+        ? Model.Vehicles.Where(vehicle => vehicle.CustomerId == selected.CustomerId).ToList()
+        : [];
+    if (customerVehicles.Count == 0 && firstCustomer is not null)
+    {
+        customerVehicles = Model.Vehicles.Where(vehicle => vehicle.CustomerId == firstCustomer.Id).ToList();
+    }
 }
 
 <section class="page-heading">
@@ -28,77 +58,89 @@
     <a class="button" asp-action="Index">Общий вид</a>
 </section>
 
-<section class="admin-section @(Model.ShowCard ? "with-card" : "list-only")">
-    <div class="panel">
-        <div class="panel-title">
-            <div>
-                <h2>Список заказ-нарядов</h2>
-                <span>Поиск по дате, клиенту, приемщику или ТС</span>
+<section class="admin-section @(workItemMode ? "with-card customer-vehicle-mode" : Model.ShowCard ? "with-card" : "list-only")">
+    @if (!workItemMode)
+    {
+        <div class="panel">
+            <div class="panel-title">
+                <div>
+                    <h2>Список заказ-нарядов</h2>
+                    <span>Поиск по номеру, дате, клиенту, мастеру, СТО или ТС</span>
+                </div>
+                <a class="button button-primary button-small" asp-action="Orders" asp-route-create="true">Создать</a>
             </div>
-            <a class="button button-primary button-small" asp-action="Orders" asp-route-create="true">Создать</a>
-        </div>
-        <form method="get" class="filter-bar">
-            <input name="q" value="@Model.Query" placeholder="Дата, клиент, мастер, гос. номер" />
-            <select name="status">
-                <option value="">Все статусы</option>
-                @foreach (var status in Enum.GetValues<WorkOrderStatus>())
+            <form method="get" class="filter-bar">
+                <input name="q" value="@Model.Query" placeholder="Номер, дата, клиент, мастер, гос. номер" />
+                <select name="status">
+                    <option value="">Все статусы</option>
+                    @foreach (var status in Enum.GetValues<WorkOrderStatus>())
+                    {
+                        <option value="@status" selected="@(Model.Status == status)">@status.Label()</option>
+                    }
+                </select>
+                <select name="serviceId">
+                    <option value="">Все услуги</option>
+                    @foreach (var service in Model.Services)
+                    {
+                        <option value="@service.Id" selected="@(Model.ServiceId == service.Id)">@service.Name</option>
+                    }
+                </select>
+                <select name="sort">
+                    <option value="date_desc" selected="@(Model.Sort == "date_desc")">Дата: новые</option>
+                    <option value="date" selected="@(Model.Sort == "date")">Дата: старые</option>
+                    <option value="client" selected="@(Model.Sort == "client")">Клиент А-Я</option>
+                    <option value="client_desc" selected="@(Model.Sort == "client_desc")">Клиент Я-А</option>
+                    <option value="master" selected="@(Model.Sort == "master")">Мастер А-Я</option>
+                    <option value="master_desc" selected="@(Model.Sort == "master_desc")">Мастер Я-А</option>
+                    <option value="status" selected="@(Model.Sort == "status")">Статус А-Я</option>
+                    <option value="status_desc" selected="@(Model.Sort == "status_desc")">Статус Я-А</option>
+                    <option value="total" selected="@(Model.Sort == "total")">Стоимость по возрастанию</option>
+                    <option value="total_desc" selected="@(Model.Sort == "total_desc")">Стоимость по убыванию</option>
+                </select>
+                <button class="button" type="submit">Применить</button>
+            </form>
+            <div class="section-list">
+                @foreach (var order in Model.Orders)
                 {
-                    <option value="@status" selected="@(Model.Status == status)">@status.Label()</option>
+                    var orderVehicleText = order.VehiclesInOrder.Count > 0
+                        ? string.Join(", ", order.VehiclesInOrder.Select(link => link.Vehicle?.PlateNumber))
+                        : order.Vehicle?.PlateNumber;
+                    <a class="section-list-row @(Model.SelectedOrder?.Id == order.Id ? "active" : "")"
+                       asp-action="Orders"
+                       asp-route-id="@order.Id"
+                       asp-route-q="@Model.Query"
+                       asp-route-sort="@Model.Sort"
+                       asp-route-status="@Model.Status"
+                       asp-route-serviceId="@Model.ServiceId">
+                        <span>
+                            <strong>@(string.IsNullOrWhiteSpace(order.OrderNumber) ? $"#{order.Id}" : order.OrderNumber) · @order.Customer?.Name</strong>
+                            <small>@order.PlannedStartAt.ToString("dd.MM.yyyy HH:mm") · @orderVehicleText · @order.ServiceCenter?.Name</small>
+                        </span>
+                        <span class="@order.Status.BadgeClass()">@order.Status.Label()</span>
+                    </a>
                 }
-            </select>
-            <select name="serviceId">
-                <option value="">Все услуги</option>
-                @foreach (var service in Model.Services)
-                {
-                    <option value="@service.Id" selected="@(Model.ServiceId == service.Id)">@service.Name</option>
-                }
-            </select>
-            <select name="sort">
-                <option value="date_desc" selected="@(Model.Sort == "date_desc")">Дата: новые</option>
-                <option value="date" selected="@(Model.Sort == "date")">Дата: старые</option>
-                <option value="client" selected="@(Model.Sort == "client")">Клиент А-Я</option>
-                <option value="client_desc" selected="@(Model.Sort == "client_desc")">Клиент Я-А</option>
-                <option value="master" selected="@(Model.Sort == "master")">Мастер А-Я</option>
-                <option value="master_desc" selected="@(Model.Sort == "master_desc")">Мастер Я-А</option>
-                <option value="status" selected="@(Model.Sort == "status")">Статус А-Я</option>
-                <option value="status_desc" selected="@(Model.Sort == "status_desc")">Статус Я-А</option>
-                <option value="total" selected="@(Model.Sort == "total")">Стоимость по возрастанию</option>
-                <option value="total_desc" selected="@(Model.Sort == "total_desc")">Стоимость по убыванию</option>
-            </select>
-            <button class="button" type="submit">Применить</button>
-        </form>
-        <div class="section-list">
-            @foreach (var order in Model.Orders)
-            {
-                <a class="section-list-row @(Model.SelectedOrder?.Id == order.Id ? "active" : "")"
-                   asp-action="Orders"
-                   asp-route-id="@order.Id"
-                   asp-route-q="@Model.Query"
-                   asp-route-sort="@Model.Sort"
-                   asp-route-status="@Model.Status"
-                   asp-route-serviceId="@Model.ServiceId">
-                    <span>
-                        <strong>#@order.Id · @order.Customer?.Name</strong>
-                        <small>@order.PlannedStartAt.ToString("dd.MM.yyyy HH:mm") · @order.Vehicle?.PlateNumber · @order.ReceiverEmployee?.FullName</small>
-                    </span>
-                    <span class="@order.Status.BadgeClass()">@order.Status.Label()</span>
-                </a>
-            }
+            </div>
         </div>
-    </div>
+    }
 
     @if (Model.ShowCard)
     {
         <aside class="panel object-card">
             <div class="panel-title">
                 <div>
-                    <h2>@(Model.IsCreate ? "Новый заказ-наряд" : $"Заказ-наряд #{selected.Id}")</h2>
+                    <h2>@(Model.IsCreate ? "Новый заказ-наряд" : $"Заказ-наряд {(string.IsNullOrWhiteSpace(selected.OrderNumber) ? $"#{selected.Id}" : selected.OrderNumber)}")</h2>
                     <span>@(editMode ? "Режим изменения" : "Режим просмотра")</span>
                 </div>
-                @if (!editMode && !Model.IsCreate)
-                {
-                    <a class="button button-small" asp-action="Orders" asp-route-id="@selected.Id" asp-route-edit="true">Редактировать</a>
-                }
+                <div class="actions-row">
+                    @if (workItemMode)
+                    {
+                        <a class="button button-small" asp-action="Orders" asp-route-id="@selected.Id" asp-route-edit="true">К заказ-наряду</a>
+                    }
+                    @if (!editMode && !Model.IsCreate)
+                    {
+                        <a class="button button-small" asp-action="Orders" asp-route-id="@selected.Id" asp-route-edit="true">Редактировать</a>
+                    }
+                </div>
             </div>
             <form asp-action="SaveOrder" method="post" class="form-grid compact">
                 @Html.AntiForgeryToken()
@@ -107,6 +149,16 @@
                     <input type="hidden" name="id" value="@selected.Id" />
                 }
                 <fieldset disabled="@(!editMode)">
+                    <label><span>Номер заказ-наряда</span><input name="orderNumber" value="@selected.OrderNumber" placeholder="Сформируется автоматически" /></label>
+                    <label>
+                        <span>Сервисный центр</span>
+                        <select name="serviceCenterId">
+                            @foreach (var center in Model.ServiceCenters)
+                            {
+                                <option value="@center.Id" selected="@(selected.ServiceCenterId == center.Id)">@center.Name</option>
+                            }
+                        </select>
+                    </label>
                     <label>
                         <span>Клиент</span>
                         <select name="customerId">
@@ -117,11 +169,20 @@
                         </select>
                     </label>
                     <label>
-                        <span>ТС</span>
+                        <span>Базовый автомобиль</span>
                         <select name="vehicleId">
-                            @foreach (var vehicle in Model.Vehicles)
+                            @foreach (var vehicle in customerVehicles)
                             {
-                                <option value="@vehicle.Id" selected="@(selected.VehicleId == vehicle.Id)">@vehicle.PlateNumber · @vehicle.Make @vehicle.Model · @vehicle.Customer?.Name</option>
+                                <option value="@vehicle.Id" selected="@(selected.VehicleId == vehicle.Id)">@vehicle.PlateNumber · @vehicle.Make @vehicle.Model</option>
+                            }
+                        </select>
+                    </label>
+                    <label class="wide">
+                        <span>Автомобили в заказ-наряде</span>
+                        <select name="selectedVehicleIds" multiple size="@(Math.Max(3, customerVehicles.Count))">
+                            @foreach (var vehicle in customerVehicles)
+                            {
+                                <option value="@vehicle.Id" selected="@(selectedVehicleIds.Contains(vehicle.Id))">@vehicle.PlateNumber · @vehicle.Make @vehicle.Model</option>
                             }
                         </select>
                     </label>
@@ -135,7 +196,17 @@
                         </select>
                     </label>
                     <label>
-                        <span>Исполнитель</span>
+                        <span>Руководитель сервиса</span>
+                        <select name="serviceManagerEmployeeId">
+                            <option value="">Не задан</option>
+                            @foreach (var employee in Model.Employees)
+                            {
+                                <option value="@employee.Id" selected="@(selected.ServiceManagerEmployeeId == employee.Id)">@employee.FullName</option>
+                            }
+                        </select>
+                    </label>
+                    <label>
+                        <span>Исполнитель по основной работе</span>
                         <select name="executorEmployeeId">
                             <option value="">Не задан</option>
                             @foreach (var employee in Model.Employees)
@@ -145,7 +216,7 @@
                         </select>
                     </label>
                     <label>
-                        <span>Услуга</span>
+                        <span>Основная услуга</span>
                         <select name="serviceId">
                             @foreach (var service in Model.Services)
                             {
@@ -162,32 +233,140 @@
                             }
                         </select>
                     </label>
-                    <label><span>Дата и время начала</span><input name="plannedStartAt" type="datetime-local" value="@selected.PlannedStartAt.ToString("yyyy-MM-ddTHH:mm")" required /></label>
-                    <label><span>Дата выполнения</span><input name="completedAt" type="datetime-local" value="@selected.CompletedAt?.ToString("yyyy-MM-ddTHH:mm")" /></label>
-                    <label><span>Плановая длительность, мин.</span><input name="plannedDurationMinutes" type="number" min="1" value="@selected.PlannedDurationMinutes" required /></label>
-                    <label><span>Фактическая длительность, мин.</span><input name="actualDurationMinutes" type="number" min="1" value="@selected.ActualDurationMinutes" /></label>
+                    <label><span>Плановое начало</span><input name="plannedStartAt" type="datetime-local" value="@selected.PlannedStartAt.ToString("yyyy-MM-ddTHH:mm")" required /></label>
+                    <label><span>Плановое окончание</span><input name="plannedEndAt" type="datetime-local" value="@selected.PlannedEndAt?.ToString("yyyy-MM-ddTHH:mm")" /></label>
+                    <label><span>Фактическое начало</span><input name="actualStartAt" type="datetime-local" value="@selected.ActualStartAt?.ToString("yyyy-MM-ddTHH:mm")" /></label>
+                    <label><span>Фактическое окончание</span><input name="actualEndAt" type="datetime-local" value="@selected.ActualEndAt?.ToString("yyyy-MM-ddTHH:mm")" /></label>
                     <label><span>Итоговая стоимость</span><input name="totalCost" type="number" min="0" step="0.01" value="@selected.TotalCost" required /></label>
                     <label class="wide"><span>Комментарий клиента</span><textarea name="customerComment" rows="3">@selected.CustomerComment</textarea></label>
-                    <label class="wide"><span>Внутренний комментарий</span><textarea name="internalComment" rows="3">@selected.InternalComment</textarea></label>
+                    <label class="wide"><span>Комментарий по заказ-наряду</span><textarea name="comment" rows="3">@(string.IsNullOrWhiteSpace(selected.Comment) ? selected.InternalComment : selected.Comment)</textarea></label>
                 </fieldset>
                 @if (editMode)
                 {
                     <button class="button button-primary" type="submit">Сохранить</button>
                 }
             </form>
-            @if (!Model.IsCreate && selected.WorkItems.Count > 0)
+
+            @if (!Model.IsCreate)
             {
-                <div class="subsection">
-                    <h3>Работы</h3>
-                    @foreach (var work in selected.WorkItems)
+                <div class="subsection vehicles-subsection">
+                    <div class="section-subtitle">
+                        <h3>Автомобили в заказ-наряде</h3>
+                    </div>
+                    @if (selected.VehiclesInOrder.Count == 0 && selected.Vehicle is not null)
                     {
-                        <div class="mini-row">
-                            <span>@work.ServiceItem?.Name</span>
-                            <strong>@work.Price.Money()</strong>
+                        <div class="mini-row vehicle-row">
+                            <span>@selected.Vehicle.PlateNumber · @selected.Vehicle.Make @selected.Vehicle.Model</span>
+                            <strong>Базовый автомобиль</strong>
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var vehicleLink in selected.VehiclesInOrder)
+                        {
+                            <div class="mini-row vehicle-row">
+                                <span>@vehicleLink.Vehicle?.PlateNumber · @vehicleLink.Vehicle?.Make @vehicleLink.Vehicle?.Model</span>
+                                <strong>@vehicleLink.Vehicle?.Year · @vehicleLink.Vehicle?.Mileage км</strong>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <div class="subsection vehicles-subsection">
+                    <div class="section-subtitle">
+                        <h3>Работы</h3>
+                        @if (editMode)
+                        {
+                            <a class="button button-small" asp-action="Orders" asp-route-id="@selected.Id" asp-route-edit="true" asp-route-workItemCreate="true">Добавить работу</a>
+                        }
+                    </div>
+                    @if (selected.WorkItems.Count == 0)
+                    {
+                        <p class="empty-inline">Работы пока не добавлены.</p>
+                    }
+                    @foreach (var work in selected.WorkItems.OrderBy(work => work.Vehicle?.PlateNumber).ThenBy(work => work.ServiceItem?.Name))
+                    {
+                        <div class="mini-row vehicle-row">
+                            <span>@work.Vehicle?.PlateNumber · @work.ServiceItem?.Name · @work.Status.Label()</span>
+                            <strong>@(work.TotalAmount > 0 ? work.TotalAmount : work.Price).Money()</strong>
+                            @if (editMode)
+                            {
+                                <a class="button button-small" asp-action="Orders" asp-route-id="@selected.Id" asp-route-edit="true" asp-route-workItemId="@work.Id" asp-route-workItemEdit="true">Карточка</a>
+                            }
                         </div>
                     }
                 </div>
             }
+        </aside>
+    }
+
+    @if (workItemMode)
+    {
+        <aside class="panel object-card vehicle-card">
+            <div class="panel-title">
+                <div>
+                    <h2>@(Model.IsWorkItemCreate ? "Новая работа" : selectedWorkItem.Description)</h2>
+                    <span>Карточка работы в заказ-наряде</span>
+                </div>
+                <a class="button button-small" asp-action="Orders" asp-route-id="@selected.Id" asp-route-edit="true">Закрыть</a>
+            </div>
+
+            <form asp-action="SaveWorkItem" method="post" class="form-grid compact">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="orderId" value="@selected.Id" />
+                @if (!Model.IsWorkItemCreate)
+                {
+                    <input type="hidden" name="id" value="@selectedWorkItem.Id" />
+                }
+                <fieldset>
+                    <label>
+                        <span>Автомобиль</span>
+                        <select name="vehicleId">
+                            @foreach (var vehicle in selected.VehiclesInOrder.Select(link => link.Vehicle!).Where(vehicle => vehicle is not null).DistinctBy(vehicle => vehicle.Id))
+                            {
+                                <option value="@vehicle.Id" selected="@(selectedWorkItem.VehicleId == vehicle.Id)">@vehicle.PlateNumber · @vehicle.Make @vehicle.Model</option>
+                            }
+                        </select>
+                    </label>
+                    <label>
+                        <span>Услуга</span>
+                        <select name="serviceId">
+                            @foreach (var service in Model.Services)
+                            {
+                                <option value="@service.Id" selected="@(selectedWorkItem.ServiceItemId == service.Id)">@service.Name</option>
+                            }
+                        </select>
+                    </label>
+                    <label class="wide"><span>Описание</span><textarea name="description" rows="3">@selectedWorkItem.Description</textarea></label>
+                    <label>
+                        <span>Исполнитель</span>
+                        <select name="executorEmployeeId">
+                            <option value="">Не задан</option>
+                            @foreach (var employee in Model.Employees)
+                            {
+                                <option value="@employee.Id" selected="@(selectedWorkItem.ExecutorEmployeeId == employee.Id)">@employee.FullName</option>
+                            }
+                        </select>
+                    </label>
+                    <label><span>Количество</span><input name="quantity" type="number" min="0.01" step="0.01" value="@(selectedWorkItem.Quantity <= 0 ? 1 : selectedWorkItem.Quantity)" required /></label>
+                    <label><span>Цена за единицу</span><input name="unitPrice" type="number" min="0" step="0.01" value="@(selectedWorkItem.UnitPrice <= 0 ? selectedWorkItem.Price : selectedWorkItem.UnitPrice)" required /></label>
+                    <label><span>Скидка, %</span><input name="discount" type="number" min="0" step="0.01" value="@selectedWorkItem.Discount" /></label>
+                    <label>
+                        <span>Статус работы</span>
+                        <select name="status">
+                            @foreach (var status in Enum.GetValues<WorkItemStatus>())
+                            {
+                                <option value="@status" selected="@(selectedWorkItem.Status == status)">@status.Label()</option>
+                            }
+                        </select>
+                    </label>
+                    <label><span>Плановое начало</span><input name="plannedStartAt" type="datetime-local" value="@selectedWorkItem.PlannedStartAt?.ToString("yyyy-MM-ddTHH:mm")" /></label>
+                    <label><span>Плановое окончание</span><input name="plannedEndAt" type="datetime-local" value="@selectedWorkItem.PlannedEndAt?.ToString("yyyy-MM-ddTHH:mm")" /></label>
+                    <label><span>Фактическое начало</span><input name="actualStartAt" type="datetime-local" value="@selectedWorkItem.ActualStartAt?.ToString("yyyy-MM-ddTHH:mm")" /></label>
+                    <label><span>Фактическое окончание</span><input name="actualEndAt" type="datetime-local" value="@selectedWorkItem.ActualEndAt?.ToString("yyyy-MM-ddTHH:mm")" /></label>
+                </fieldset>
+                <button class="button button-primary" type="submit">Сохранить работу</button>
+            </form>
         </aside>
     }
 </section>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="00047141-be4c-4b82-be31-eab6bbb1b7d9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/Controllers/AdminController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/Controllers/AdminController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/Data/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/Data/AppDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/Models/DisplayExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/Models/DisplayExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/Models/DomainModels.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/Models/DomainModels.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/Models/Enums.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/Models/Enums.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/Services/DemoSeeder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/Services/DemoSeeder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/ViewModels/DashboardViewModels.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/ViewModels/DashboardViewModels.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/Views/Admin/Customers.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/Views/Admin/Customers.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/Views/Admin/Employees.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/Views/Admin/Employees.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/Views/Admin/Orders.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/Views/Admin/Orders.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/Views/Admin/Services.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/Views/Admin/Services.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/bin/Debug/net10.0/FitServiceCRM.dll" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/bin/Debug/net10.0/FitServiceCRM.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/bin/Debug/net10.0/FitServiceCRM.exe" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/bin/Debug/net10.0/FitServiceCRM.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/bin/Debug/net10.0/FitServiceCRM.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/bin/Debug/net10.0/FitServiceCRM.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/bin/Debug/net10.0/FitServiceCRM.staticwebassets.endpoints.json" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/bin/Debug/net10.0/FitServiceCRM.staticwebassets.endpoints.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/bin/Debug/net10.0/FitServiceCRM.staticwebassets.runtime.json" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/bin/Debug/net10.0/FitServiceCRM.staticwebassets.runtime.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/fitservicecrm.db" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/fitservicecrm.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/FitServiceCRM.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/FitServiceCRM.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/FitServiceCRM.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/FitServiceCRM.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/FitServiceCRM.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/FitServiceCRM.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/FitServiceCRM.dll" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/FitServiceCRM.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/FitServiceCRM.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/FitServiceCRM.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/compressed/giviroc53z-{0}-afunntfhd2-afunntfhd2.gz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/rbcswa.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/rbcswa.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/ref/FitServiceCRM.dll" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/ref/FitServiceCRM.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/refint/FitServiceCRM.dll" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/refint/FitServiceCRM.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/rjimswa.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/rjimswa.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/rjsmcshtml.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/rjsmrazor.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/rpswa.dswa.cache.json" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/rpswa.dswa.cache.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/staticwebassets.build.endpoints.json" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/staticwebassets.build.endpoints.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/staticwebassets.build.json" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/staticwebassets.build.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/staticwebassets.build.json.cache" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/staticwebassets.build.json.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/staticwebassets.development.json" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/Debug/net10.0/staticwebassets.development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/FitServiceCRM.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/FitServiceCRM.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitServiceCRM/wwwroot/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/FitServiceCRM/wwwroot/css/site.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fitservicecrm.run.log" beforeDir="false" afterPath="$PROJECT_DIR$/fitservicecrm.run.log" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "BorisITZaitsev"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/BorisITZaitsev/FScrm.git",
+    "accountId": "bfa74713-f89e-494c-97aa-25eea2f2064d"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 0,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3DUgcvb2D3yYGJGORUT9eYZoQkD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-b63d5a1f7c97-b61e75351b1f-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-261.22158.340" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="00047141-be4c-4b82-be31-eab6bbb1b7d9" name="Changes" comment="" />
+      <created>1778342146167</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1778342146167</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -1,0 +1,69 @@
+@model ManagerServicesSectionViewModel
+@{
+    ViewData["Title"] = "Услуги | Руководитель сервиса";
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Услуги</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+<section class="admin-section @(Model.SelectedService is null ? "list-only" : "with-card")">
+    <div class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Список услуг</h2>
+                <span>Поиск по наименованию и фильтр по категории</span>
+            </div>
+        </div>
+        <form method="get" class="filter-bar">
+            <input name="q" value="@Model.Query" placeholder="Наименование услуги" />
+            <select name="category">
+                <option value="">Все категории</option>
+                @foreach (var item in Model.Categories)
+                {
+                    <option value="@item" selected="@(item == Model.Category)">@item</option>
+                }
+            </select>
+            <select name="sort">
+                <option value="name" selected="@(Model.Sort == "name")">Название</option>
+                <option value="price" selected="@(Model.Sort == "price")">Стоимость</option>
+                <option value="price_desc" selected="@(Model.Sort == "price_desc")">Стоимость ↓</option>
+            </select>
+            <button class="button" type="submit">Применить</button>
+        </form>
+        <div class="section-list">
+            @foreach (var service in Model.Services)
+            {
+                <a class="section-list-row @(Model.SelectedService?.Id == service.Id ? "active" : "")" asp-action="Services" asp-route-id="@service.Id" asp-route-q="@Model.Query" asp-route-sort="@Model.Sort" asp-route-category="@Model.Category">
+                    <span>
+                        <strong>@service.Name</strong>
+                        <small>@service.Category · @service.BasePrice.Money()</small>
+                    </span>
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model.SelectedService is not null)
+    {
+        <aside class="panel object-card">
+            <div class="panel-title">
+                <div>
+                    <h2>@Model.SelectedService.Name</h2>
+                    <span>Карточка услуги</span>
+                </div>
+            </div>
+            <div class="info-grid">
+                <div><span>Категория</span><strong>@Model.SelectedService.Category</strong></div>
+                <div><span>Базовая стоимость</span><strong>@Model.SelectedService.BasePrice.Money()</strong></div>
+                <div><span>Нормативная длительность</span><strong>@Model.SelectedService.StandardDurationMinutes мин.</strong></div>
+                <div><span>Тип</span><strong>@Model.SelectedService.Type</strong></div>
+                <div class="span-2"><span>Описание</span><strong>@Model.SelectedService.Description</strong></div>
+            </div>
+        </aside>
+    }
+</section>

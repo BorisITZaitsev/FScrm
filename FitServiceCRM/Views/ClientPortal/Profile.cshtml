@@ -1,0 +1,81 @@
+@model ClientProfileSectionViewModel
+@{
+    ViewData["Title"] = "Профиль клиента | Fit Service CRM";
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Профиль</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+@if (Model.Customer.Type == CustomerType.Individual)
+{
+    <section class="panel">
+        <div class="panel-title"><div><h2>@Model.Customer.Name</h2><span>Карточка клиента</span></div></div>
+        <form asp-action="SaveProfile" method="post" class="form-grid compact">
+            @Html.AntiForgeryToken()
+            <label><span>ФИО</span><input value="@Model.Customer.IndividualProfile?.FullName" disabled /></label>
+            <label><span>Телефон</span><input name="phone" value="@Model.Customer.Phone" /></label>
+            <label><span>Email</span><input name="email" value="@Model.Customer.Email" /></label>
+            <label><span>Адрес</span><input name="address" value="@Model.Customer.Address" /></label>
+            <button class="button button-primary" type="submit">Сохранить</button>
+        </form>
+    </section>
+}
+else
+{
+    <section class="admin-section @(Model.ShowRepresentativeCard ? "with-two-cards" : "with-card")">
+        <div class="panel">
+            <div class="panel-title"><div><h2>@Model.Customer.Name</h2><span>Юридическое лицо</span></div></div>
+            <form asp-action="SaveProfile" method="post" class="form-grid compact">
+                @Html.AntiForgeryToken()
+                <label><span>Наименование</span><input value="@Model.Customer.LegalProfile?.OrganizationName" disabled /></label>
+                <label><span>Телефон</span><input name="phone" value="@Model.Customer.Phone" /></label>
+                <label><span>Email</span><input name="email" value="@Model.Customer.Email" /></label>
+                <label class="wide"><span>Адрес</span><input name="address" value="@Model.Customer.Address" /></label>
+                <button class="button button-primary" type="submit">Сохранить</button>
+            </form>
+        </div>
+
+        <aside class="panel object-card">
+            <div class="panel-title">
+                <div><h2>Представители</h2><span>Контактные лица организации</span></div>
+                <a class="button button-small" asp-action="Profile" asp-route-representativeCreate="true" asp-route-representativeEdit="true">Добавить</a>
+            </div>
+            <div class="section-list">
+                @foreach (var representative in Model.Customer.Representatives)
+                {
+                    <a class="section-list-row @(Model.SelectedRepresentative?.Id == representative.Id ? "active" : "")" asp-action="Profile" asp-route-representativeId="@representative.Id" asp-route-representativeEdit="true">
+                        <span>
+                            <strong>@representative.FullName</strong>
+                            <small>@representative.Position · @representative.Phone</small>
+                        </span>
+                    </a>
+                }
+            </div>
+        </aside>
+
+        @if (Model.ShowRepresentativeCard)
+        {
+            var representative = Model.SelectedRepresentative ?? new CustomerRepresentative();
+            <aside class="panel object-card vehicle-card">
+                <div class="panel-title"><div><h2>@(Model.IsRepresentativeCreate ? "Новый представитель" : representative.FullName)</h2><span>Карточка представителя</span></div><a class="button button-small" asp-action="Profile">Закрыть</a></div>
+                <form asp-action="SaveRepresentative" method="post" class="form-grid compact">
+                    @Html.AntiForgeryToken()
+                    @if (!Model.IsRepresentativeCreate)
+                    {
+                        <input type="hidden" name="id" value="@representative.Id" />
+                    }
+                    <label><span>ФИО</span><input name="fullName" value="@representative.FullName" required /></label>
+                    <label><span>Должность</span><input name="position" value="@representative.Position" /></label>
+                    <label><span>Телефон</span><input name="phone" value="@representative.Phone" /></label>
+                    <label><span>Email</span><input name="email" value="@representative.Email" /></label>
+                    <button class="button button-primary" type="submit">Сохранить</button>
+                </form>
+            </aside>
+        }
+    </section>
+}

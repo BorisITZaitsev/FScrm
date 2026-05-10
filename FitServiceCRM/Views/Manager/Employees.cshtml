@@ -1,0 +1,60 @@
+@model ManagerEmployeesSectionViewModel
+@{
+    ViewData["Title"] = "Сотрудники | Руководитель сервиса";
+}
+
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Раздел</p>
+        <h1>Сотрудники</h1>
+    </div>
+    <a class="button" asp-action="Index">Общий вид</a>
+</section>
+
+<section class="admin-section @(Model.SelectedEmployee is null ? "list-only" : "with-card")">
+    <div class="panel">
+        <div class="panel-title">
+            <div>
+                <h2>Список сотрудников</h2>
+                <span>Поиск по ФИО, должности, телефону и email</span>
+            </div>
+        </div>
+        <form method="get" class="filter-bar">
+            <input name="q" value="@Model.Query" placeholder="ФИО, должность, телефон, email" />
+            <select name="sort">
+                <option value="name" selected="@(Model.Sort == "name")">ФИО</option>
+                <option value="position" selected="@(Model.Sort == "position")">Должность</option>
+                <option value="position_desc" selected="@(Model.Sort == "position_desc")">Должность ↓</option>
+            </select>
+            <button class="button" type="submit">Применить</button>
+        </form>
+        <div class="section-list">
+            @foreach (var employee in Model.Employees)
+            {
+                <a class="section-list-row @(Model.SelectedEmployee?.Id == employee.Id ? "active" : "")" asp-action="Employees" asp-route-id="@employee.Id" asp-route-q="@Model.Query" asp-route-sort="@Model.Sort">
+                    <span>
+                        <strong>@employee.FullName</strong>
+                        <small>@employee.Position · @employee.Phone</small>
+                    </span>
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model.SelectedEmployee is not null)
+    {
+        <aside class="panel object-card">
+            <div class="panel-title">
+                <div>
+                    <h2>@Model.SelectedEmployee.FullName</h2>
+                    <span>Карточка сотрудника</span>
+                </div>
+            </div>
+            <div class="info-grid">
+                <div><span>Должность</span><strong>@Model.SelectedEmployee.Position</strong></div>
+                <div><span>Телефон</span><strong>@Model.SelectedEmployee.Phone</strong></div>
+                <div class="span-2"><span>Email</span><strong>@Model.SelectedEmployee.Email</strong></div>
+            </div>
+        </aside>
+    }
+</section>
