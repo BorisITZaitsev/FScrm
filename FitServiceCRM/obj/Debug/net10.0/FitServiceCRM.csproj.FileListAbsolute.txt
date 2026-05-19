@@ -159,7 +159,3 @@ C:\Users\borya\Programming\Codex projects\2026_Дипломная работа_�
 C:\Users\borya\Programming\Codex projects\2026_Дипломная работа_БараникасМИ\FitServiceCRM\FitServiceCRM\bin\Debug\net10.0\FitServiceCRM.pdb
 C:\Users\borya\Programming\Codex projects\2026_Дипломная работа_БараникасМИ\FitServiceCRM\FitServiceCRM\obj\Debug\net10.0\FitServiceCRM.genruntimeconfig.cache
 C:\Users\borya\Programming\Codex projects\2026_Дипломная работа_БараникасМИ\FitServiceCRM\FitServiceCRM\obj\Debug\net10.0\ref\FitServiceCRM.dll
-C:\Users\borya\Programming\Codex projects\2026_Дипломная работа_БараникасМИ\FitServiceCRM\fitservicecrm\obj\Debug\net10.0\compressed\f7ar5nihk4-{0}-x7rg07s5qs-x7rg07s5qs.gz
-C:\Users\borya\Programming\Codex projects\2026_Дипломная работа_БараникасМИ\FitServiceCRM\fitservicecrm\obj\Debug\net10.0\fitservi.674D77F5.Up2Date
-C:\Users\borya\Programming\Codex projects\2026_Дипломная работа_БараникасМИ\FitServiceCRM\Fitservicecrm\obj\Debug\net10.0\compressed\ooj74xl1bs-{0}-x7rg07s5qs-x7rg07s5qs.gz
-C:\Users\borya\Programming\Codex projects\2026_Дипломная работа_БараникасМИ\FitServiceCRM\Fitservicecrm\obj\Debug\net10.0\Fitservi.692A7815.Up2Date

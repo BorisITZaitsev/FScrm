@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\borya\\Programming\\Codex projects\\2026_Дипломная работа_БараникасМИ\\FitServiceCRM\\Fitservicecrm\\Fitservicecrm.csproj": {}
+    "C:\\Users\\borya\\Programming\\Codex projects\\2026_Дипломная работа_БараникасМИ\\FitServiceCRM\\FitServiceCRM\\FitServiceCRM.csproj": {}
   },
   "projects": {
-    "C:\\Users\\borya\\Programming\\Codex projects\\2026_Дипломная работа_БараникасМИ\\FitServiceCRM\\Fitservicecrm\\Fitservicecrm.csproj": {
+    "C:\\Users\\borya\\Programming\\Codex projects\\2026_Дипломная работа_БараникасМИ\\FitServiceCRM\\FitServiceCRM\\FitServiceCRM.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\borya\\Programming\\Codex projects\\2026_Дипломная работа_БараникасМИ\\FitServiceCRM\\Fitservicecrm\\Fitservicecrm.csproj",
-        "projectName": "Fitservicecrm",
-        "projectPath": "C:\\Users\\borya\\Programming\\Codex projects\\2026_Дипломная работа_БараникасМИ\\FitServiceCRM\\Fitservicecrm\\Fitservicecrm.csproj",
+        "projectUniqueName": "C:\\Users\\borya\\Programming\\Codex projects\\2026_Дипломная работа_БараникасМИ\\FitServiceCRM\\FitServiceCRM\\FitServiceCRM.csproj",
+        "projectName": "FitServiceCRM",
+        "projectPath": "C:\\Users\\borya\\Programming\\Codex projects\\2026_Дипломная работа_БараникасМИ\\FitServiceCRM\\FitServiceCRM\\FitServiceCRM.csproj",
         "packagesPath": "C:\\Users\\borya\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\borya\\Programming\\Codex projects\\2026_Дипломная работа_БараникасМИ\\FitServiceCRM\\Fitservicecrm\\obj\\",
+        "outputPath": "C:\\Users\\borya\\Programming\\Codex projects\\2026_Дипломная работа_БараникасМИ\\FitServiceCRM\\FitServiceCRM\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Users\\borya\\Programming\\VisualStudioShared\\NuGetPackages"
